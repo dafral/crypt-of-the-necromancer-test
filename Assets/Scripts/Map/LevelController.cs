@@ -17,5 +17,10 @@ namespace Dafral.Level
         {
             ServiceLocator.Instance.GetService<IGridService>().LoadLevel(_levelDataConfiguration);
         }
+
+        private void SpawnPlayer()
+        {
+            
+        }
     }
 }

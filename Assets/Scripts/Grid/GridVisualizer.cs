@@ -71,10 +71,17 @@ namespace Dafral.Grid
 
         private void CreateTileVisual(Vector2Int gridPosition, TileData tileData)
         {
-            if (tileData.TileType == null) return;
-
             var worldPos = _coordinateConverter.GridToWorld(gridPosition);
-            var tileObject = CreateDefaultTileVisual(worldPos, tileData.TileType);
+            GameObject tileObject;
+
+            if (tileData.TileType.Prefab != null)
+            {
+                tileObject = Instantiate(tileData.TileType.Prefab, worldPos, Quaternion.identity, GetParent());
+            }
+            else
+            {
+                tileObject = CreateDefaultTileVisual(worldPos, tileData.TileType);
+            }
 
             tileObject.name = $"Tile_{gridPosition.x}_{gridPosition.y}";
             _tileVisuals[gridPosition] = tileObject;
