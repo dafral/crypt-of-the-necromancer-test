@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f47018724e5ec046a6acdc06af7cd76, type: 3}
+  m_Name: PlayerSpawn
+  m_EditorClassIdentifier: 
+  _id: player_spawn
+  _isWalkable: 1
+  _sprite: {fileID: 1986422026, guid: 8d16ab5b639324b4a973d9be6c1b9969, type: 3}
+  _editorColor: {r: 1, g: 0, b: 0.88759804, a: 1}
+  _prefab: {fileID: 4745717899016048145, guid: e8d7d5cab7463aa43805e654fabdafa4, type: 3}

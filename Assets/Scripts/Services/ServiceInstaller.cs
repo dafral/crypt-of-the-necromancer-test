@@ -1,10 +1,14 @@
+using Dafral.Grid;
+
 namespace Dafral.Services
 {
     public class ServiceInstaller
     {
         public void Install()
         {
-            ServiceLocator.Instance.RegisterService<IEventService>(new EventService());
+            var eventService = ServiceLocator.Instance.RegisterService<IEventService>(new EventService());
+            ServiceLocator.Instance.RegisterService<IInputService>(new InputService(eventService));
+            ServiceLocator.Instance.RegisterService<IGridService>(new GridService());
         }
     }
 }
