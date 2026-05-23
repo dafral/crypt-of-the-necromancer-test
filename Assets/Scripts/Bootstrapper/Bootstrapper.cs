@@ -33,13 +33,26 @@ namespace Dafral.Bootstrapper
         private static void BootstrapEditorSetup()
         {
             SceneManager.LoadSceneAsync(BOOTSTRAPPER_SCENE_NAME, LoadSceneMode.Single);
-            SceneManager.LoadSceneAsync(_editorOpenedSceneName, LoadSceneMode.Additive);
+            LoadAdditiveAndSetActive(_editorOpenedSceneName);
         }
 
         private static void BootstrapNormalSetup()
         {
             SceneManager.LoadSceneAsync(BOOTSTRAPPER_SCENE_NAME, LoadSceneMode.Single);
-            SceneManager.LoadSceneAsync(LEVEL_SCENE_NAME, LoadSceneMode.Additive);
+            LoadAdditiveAndSetActive(LEVEL_SCENE_NAME);
+        }
+
+        private static void LoadAdditiveAndSetActive(string sceneName)
+        {
+            AsyncOperation additiveLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            additiveLoad.completed += _ =>
+            {
+                Scene loadedScene = SceneManager.GetSceneByName(sceneName);
+                if (loadedScene.IsValid() && loadedScene.isLoaded)
+                {
+                    SceneManager.SetActiveScene(loadedScene);
+                }
+            };
         }
     }
 }
