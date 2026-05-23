@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Dafral.CustomInput;
+using Dafral.Grid;
 using UnityEngine;
 
 namespace Dafral.Player
@@ -31,6 +32,11 @@ namespace Dafral.Player
         private void OnDisable()
         {
             _inputHandler?.Dispose();
+        }
+
+        public bool TryToMove(Vector2Int direction)
+        {
+            return false;
         }
     }
 }

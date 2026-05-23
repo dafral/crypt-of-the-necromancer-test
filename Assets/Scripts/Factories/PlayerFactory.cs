@@ -11,7 +11,7 @@ namespace Dafral.Player
             _playerConfiguration = playerConfiguration;
         }
 
-        public static IPlayer CreatePlayer(Vector2 position)
+        public static Player CreatePlayer(Vector2 position)
         {
             return Object.Instantiate(_playerConfiguration.Prefab, position, Quaternion.identity);
         }
