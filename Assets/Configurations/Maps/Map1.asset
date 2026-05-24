@@ -28,7 +28,7 @@ MonoBehaviour:
   - Position: {x: 4, y: 7}
     TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
   - Position: {x: 4, y: 6}
-    TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
+    TileType: {fileID: 11400000, guid: d44774eb5a964db48adf107fc58cfcae, type: 2}
   - Position: {x: 5, y: 6}
     TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
   - Position: {x: 5, y: 5}
@@ -96,7 +96,7 @@ MonoBehaviour:
   - Position: {x: 1, y: 2}
     TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
   - Position: {x: 1, y: 1}
-    TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
+    TileType: {fileID: 11400000, guid: d44774eb5a964db48adf107fc58cfcae, type: 2}
   - Position: {x: 2, y: 2}
     TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
   - Position: {x: 2, y: 1}
@@ -198,7 +198,7 @@ MonoBehaviour:
   - Position: {x: 4, y: 2}
     TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
   - Position: {x: 4, y: 1}
-    TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
+    TileType: {fileID: 11400000, guid: d44774eb5a964db48adf107fc58cfcae, type: 2}
   - Position: {x: 5, y: 2}
     TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
   - Position: {x: 6, y: 2}
