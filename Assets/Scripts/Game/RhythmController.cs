@@ -14,6 +14,7 @@ namespace Dafral.Game
         public float TempoBpm => _tempoBpm;
         public float BeatInterval => 60f / Mathf.Max(1f, _tempoBpm);
         public float BeatProgress => Mathf.Clamp01(_elapsedFromLastBeat / BeatInterval);
+        public float ElapsedFromLastBeat => _elapsedFromLastBeat;
 
         public void Initialize(float tempoBpm)
         {

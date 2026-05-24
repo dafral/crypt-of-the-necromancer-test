@@ -1,5 +1,9 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using Dafral.CustomInput;
+using Dafral.Events;
+using Dafral.Game;
 using Dafral.Game.Map;
 using Dafral.Services;
 using UnityEngine;
@@ -10,41 +14,112 @@ namespace Dafral.Player
     {
         [SerializeField] private float _moveDuration = 0.1f;
 
+        [Header("Rhythm Timing Windows (seconds)")]
+        [SerializeField] private float _earlyWindowDuration = 0.15f;
+        [SerializeField] private float _lateWindowDuration = 0.15f;
+        [SerializeField] private float _perfectWindowDuration = 0.05f;
+
         private GameplayInputHandler _inputHandler;
         private IGridEntity _gridEntity;
         private IGridService _gridService;
+        private IEventService _eventService;
+        private RhythmController _rhythmController;
         private Transform _playerTransform;
         private bool _isMoving;
+        private bool _movedThisBeat;
         private Coroutine _moveCoroutine;
 
         public bool IsMoving => _isMoving;
+        public event Action<BeatScore> OnMovementScored;
 
         public void Initialize(IGridEntity gridEntity, Transform playerTransform)
         {
             _gridEntity = gridEntity;
             _playerTransform = playerTransform;
-            _gridService = ServiceLocator.Instance.GetService<IGridService>();
+
+            var serviceLocator = ServiceLocator.Instance;
+            _gridService = serviceLocator.GetService<IGridService>();
+            _eventService = serviceLocator.GetService<IEventService>();
+            _rhythmController = FindObjectOfType<RhythmController>();
+
+            _eventService.Subscribe<OnBeatTriggered>(OnBeatTriggered);
             InitializeInputHandler();
+        }
+
+        private void OnBeatTriggered(OnBeatTriggered e)
+        {
+            _movedThisBeat = false;
         }
 
         private void InitializeInputHandler()
         {
-            _inputHandler = new GameplayInputHandler(new System.Collections.Generic.Dictionary<GameplayInputActions, System.Action>());
+            var inputActions = new Dictionary<GameplayInputActions, Action>
+            {
+                { GameplayInputActions.MoveUp, OnMoveUp },
+                { GameplayInputActions.MoveLeft, OnMoveLeft },
+                { GameplayInputActions.MoveDown, OnMoveDown },
+                { GameplayInputActions.MoveRight, OnMoveRight },
+            };
+            
+            _inputHandler = new GameplayInputHandler(inputActions);
             _inputHandler.Initialize();
         }
 
-        private void Update()
+        private void OnMoveUp()
         {
-            if (_isMoving) return;
-            if (_inputHandler?.Reader == null) return;
+            TryRhythmMove(Vector2Int.up);
+        }
 
-            var input = _inputHandler.Reader.MovementInput;
-            var direction = SnapToCardinalDirection(input);
+        private void OnMoveLeft()
+        {
+            TryRhythmMove(Vector2Int.left);
+        }
 
-            if (direction != Vector2Int.zero)
+        private void OnMoveDown()
+        {
+            TryRhythmMove(Vector2Int.down);
+        }
+
+        private void OnMoveRight()
+        {
+            TryRhythmMove(Vector2Int.right);
+        }
+
+        private void TryRhythmMove(Vector2Int direction)
+        {
+            BeatScore score = EvaluateBeatTiming();
+
+            if (score == BeatScore.None)
+                return;
+
+            if (TryToMove(direction))
             {
-                TryToMove(direction);
+                _movedThisBeat = true;
+                OnMovementScored?.Invoke(score);
             }
+        }
+
+        private BeatScore EvaluateBeatTiming()
+        {
+            float elapsed = _rhythmController.ElapsedFromLastBeat;
+            float beatInterval = _rhythmController.BeatInterval;
+            float timeToNextBeat = beatInterval - elapsed;
+
+            bool inLateWindow = elapsed <= _lateWindowDuration;
+            bool inEarlyWindow = timeToNextBeat <= _earlyWindowDuration;
+
+            if (!inLateWindow && !inEarlyWindow)
+                return BeatScore.None;
+
+            float distanceToBeat = Mathf.Min(elapsed, timeToNextBeat);
+
+            if (distanceToBeat <= _perfectWindowDuration)
+                return BeatScore.Perfect;
+
+            if (inEarlyWindow)
+                return BeatScore.TooSoon;
+
+            return BeatScore.TooLate;
         }
 
         public bool TryToMove(Vector2Int direction)
@@ -101,6 +176,7 @@ namespace Dafral.Player
         private void OnDisable()
         {
             _inputHandler?.Dispose();
+            _eventService?.Unsubscribe<OnBeatTriggered>(OnBeatTriggered);
 
             if (_moveCoroutine != null)
             {
