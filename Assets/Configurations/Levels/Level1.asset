@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: 
   _levelData:
-    RhythmTempo: 60
+    RhythmTempo: 120
   _mapConfiguration: {fileID: 11400000, guid: 6cc641f88b97cf649834b396e1e80b3c, type: 2}

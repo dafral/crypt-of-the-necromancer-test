@@ -43,24 +43,35 @@ namespace Dafral.Game.Map
                 && position.y >= 0 && position.y < _size.y;
         }
 
-        public bool CanMoveTo(Vector2Int position)
-        {
-            if (!IsWithinBounds(position)) return false;
-            var tile = GetTile(position);
-            return tile != null && tile.CanBeEntered;
-        }
-
         public bool TryMoveEntity(IGridEntity entity, Vector2Int targetPosition)
         {
-            if (!CanMoveTo(targetPosition)) return false;
+            if (!IsWithinBounds(targetPosition)) 
+            {
+                return false;
+            }
 
-            var originTile = GetTile(entity.GridPosition);
-            var targetTile = GetTile(targetPosition);
+            var tile = GetTile(targetPosition);
+            var tileState = tile.GetTileState();
 
-            if (!targetTile.TrySetOccupant(entity)) return false;
+            if(tileState == TileState.Occupied)
+            {
+                entity.Interact(tile.OccupyingEntity);
+                return false;
+            }
 
-            originTile?.ClearOccupant();
-            entity.SetGridPosition(targetPosition);
+            else if(tileState == TileState.Walkable)
+            {
+                var originTile = GetTile(entity.GridPosition);
+                var targetTile = GetTile(targetPosition);
+                if (!targetTile.TrySetOccupant(entity)) 
+                {
+                    return false;
+                }
+
+                originTile?.ClearOccupant();
+                entity.SetGridPosition(targetPosition);
+            }
+
             return true;
         }
 
@@ -69,7 +80,7 @@ namespace Dafral.Game.Map
             if (!IsWithinBounds(position)) return false;
 
             var tile = GetTile(position);
-            if (tile == null || !tile.IsWalkable) return false;
+            if (!tile.IsWalkable) return false;
 
             return tile.TrySetOccupant(entity);
         }

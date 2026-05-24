@@ -1,4 +1,5 @@
 using Dafral.Game.Map;
+using Dafral.Services;
 using UnityEngine;
 
 namespace Dafral.Enemies
@@ -7,19 +8,46 @@ namespace Dafral.Enemies
     {
         [SerializeField] private EnemyHealth _enemyHealth;
         [SerializeField] private EnemyMovement _enemyMovement;
+        [SerializeField] private EnemyInteract _enemyInteract;
 
-        public Vector2Int GridPosition => throw new System.NotImplementedException();
+        private Vector2Int _gridPosition;
+        private IGridService _gridService;
 
-        public bool IsMoving => throw new System.NotImplementedException();
+        public Vector2Int GridPosition => _gridPosition;
+        public GridEntityType EntityType => GridEntityType.Enemy;
+        public bool IsMoving => false;
+
+        public void Interact(IGridEntity otherEntity)
+        {
+        }
 
         public void SetGridPosition(Vector2Int position)
         {
-            throw new System.NotImplementedException();
+            _gridPosition = position;
         }
 
         public bool TryMove(Vector2Int direction)
         {
-            throw new System.NotImplementedException();
+            return false;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            _enemyHealth.TakeDamage(damage);
+        }
+
+        private void Start()
+        {
+            _gridService = ServiceLocator.Instance.GetService<IGridService>();
+            _gridPosition = _gridService.GetGridPosition(transform.position);
+            _gridService.TryPlaceEntity(this, _gridPosition);
+            _enemyHealth.Initialize(OnDeath);
+        }
+
+        private void OnDeath()
+        {
+            _gridService.RemoveEntity(this);
+            Destroy(gameObject);
         }
     }
 }
