@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Dafral.Game.Map
 {
-    [CreateAssetMenu(fileName = "NewTileConfiguration", menuName = "Dafral/Map/Tile Configuration")]
+    [CreateAssetMenu(fileName = "NewTileConfiguration", menuName = "Dafral/Game/Tile Configuration")]
     public class TileConfiguration : ScriptableObject
     {
         [Header("Identity")]

@@ -6,21 +6,23 @@ namespace Dafral.Game
 {
     public class LevelController : MonoBehaviour
     {
-        [SerializeField] private MapConfiguration _mapConfiguration;
+        [SerializeField] private LevelConfiguration _levelConfiguration;
+        [SerializeField] private RhythmController _rhythmController;
 
         private void Start()
         {
-            InitializeLevel();
+            CreateMap();
+            InitializeRhythm();
         }
 
-        private void InitializeLevel()
+        private void CreateMap()
         {
-            ServiceLocator.Instance.GetService<IGridService>().LoadMap(_mapConfiguration);
+            ServiceLocator.Instance.GetService<IGridService>().LoadMap(_levelConfiguration.MapConfiguration);
         }
 
-        private void SpawnPlayer()
+        private void InitializeRhythm()
         {
-
+            _rhythmController.Initialize(_levelConfiguration.LevelData.RhythmTempo);
         }
     }
 }
