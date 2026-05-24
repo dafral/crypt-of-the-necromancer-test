@@ -1,4 +1,4 @@
-using Dafral.Grid;
+using Dafral.Game.Map;
 using Dafral.Services;
 using UnityEngine;
 

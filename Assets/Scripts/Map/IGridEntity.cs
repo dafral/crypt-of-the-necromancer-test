@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Dafral.Grid
+namespace Dafral.Game.Map
 {
     public interface IGridEntity
     {

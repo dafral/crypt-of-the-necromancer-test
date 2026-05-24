@@ -7,6 +7,7 @@ namespace Dafral.Bootstrapper
     public class Installer : MonoBehaviour
     {
         [SerializeField] private PlayerConfiguration _playerConfiguration;
+        [SerializeField] private UIConfiguration _uiConfiguration;
 
         private ServiceInstaller _serviceInstaller = new();
 
@@ -18,7 +19,7 @@ namespace Dafral.Bootstrapper
 
         private void InitializeServices()
         {
-            _serviceInstaller.Install();
+            _serviceInstaller.Install(_uiConfiguration);
         }
 
         private void InitializeFactories()

@@ -2,7 +2,10 @@ namespace Dafral.CustomInput
 {
     public enum GameplayInputActions
     {
-        Movement,
+        MoveUp,
+        MoveLeft,
+        MoveDown,
+        MoveRight,
         Pause
     }
 }
