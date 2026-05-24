@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
-namespace Dafral.Grid
+namespace Dafral.Game.Map
 {
-    [CreateAssetMenu(fileName = "NewLevelConfiguration", menuName = "Dafral/Map/Level Configuration")]
-    public class LevelDataConfiguration : ScriptableObject
+    [CreateAssetMenu(fileName = "NewMapConfiguration", menuName = "Dafral/Game/Map Configuration")]
+    public class MapConfiguration : ScriptableObject
     {
         [SerializeField] private Vector2Int _gridSize = new(10, 10);
         [SerializeField] private float _cellSize = 1f;

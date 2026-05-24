@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Dafral.Grid
+namespace Dafral.Game.Map
 {
     [CreateAssetMenu(fileName = "NewTileConfiguration", menuName = "Dafral/Map/Tile Configuration")]
     public class TileConfiguration : ScriptableObject

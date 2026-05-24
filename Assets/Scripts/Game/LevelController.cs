@@ -1,12 +1,12 @@
-using Dafral.Grid;
+using Dafral.Game.Map;
 using Dafral.Services;
 using UnityEngine;
 
-namespace Dafral.Level
+namespace Dafral.Game
 {
     public class LevelController : MonoBehaviour
     {
-        [SerializeField] private LevelDataConfiguration _levelDataConfiguration;
+        [SerializeField] private MapConfiguration _mapConfiguration;
 
         private void Start()
         {
@@ -15,12 +15,12 @@ namespace Dafral.Level
 
         private void InitializeLevel()
         {
-            ServiceLocator.Instance.GetService<IGridService>().LoadLevel(_levelDataConfiguration);
+            ServiceLocator.Instance.GetService<IGridService>().LoadMap(_mapConfiguration);
         }
 
         private void SpawnPlayer()
         {
-            
+
         }
     }
 }

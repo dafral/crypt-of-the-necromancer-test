@@ -2,7 +2,7 @@ using Dafral.Events;
 using Dafral.Services;
 using UnityEngine;
 
-namespace Dafral.Grid
+namespace Dafral.Game.Map
 {
     public class GridService : IGridService
     {
@@ -12,12 +12,12 @@ namespace Dafral.Grid
         public GridData Grid => _grid;
         public GridCoordinateConverter CoordinateConverter => _coordinateConverter;
 
-        public void LoadLevel(LevelDataConfiguration levelData)
+        public void LoadMap(MapConfiguration mapData)
         {
-            _coordinateConverter = new GridCoordinateConverter(levelData.CellSize);
-            _grid = new GridData(levelData.GridSize);
+            _coordinateConverter = new GridCoordinateConverter(mapData.CellSize);
+            _grid = new GridData(mapData.GridSize);
 
-            var tiles = levelData.Tiles ?? System.Array.Empty<LevelDataConfiguration.TileEntry>();
+            var tiles = mapData.Tiles ?? System.Array.Empty<MapConfiguration.TileEntry>();
             foreach (var tileEntry in tiles)
             {
                 _grid.SetTile(tileEntry.Position, tileEntry.TileType);

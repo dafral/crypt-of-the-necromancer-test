@@ -1,18 +1,18 @@
-using Dafral.Grid;
+using Dafral.Game.Map;
 using UnityEditor;
 using UnityEngine;
 
-namespace Dafral.Grid.Editor
+namespace Dafral.Game.Map.Editor
 {
-    public partial class LevelEditorWindow
+    public partial class MapEditorWindow
     {
         private void DrawLevelAssetSection()
         {
             EditorGUILayout.LabelField("Target Level", EditorStyles.miniBoldLabel);
 
             EditorGUI.BeginChangeCheck();
-            _levelData = (LevelDataConfiguration)EditorGUILayout.ObjectField(
-                "Level Data", _levelData, typeof(LevelDataConfiguration), false);
+            _mapConfiguration = (MapConfiguration)EditorGUILayout.ObjectField(
+                "Level Data", _mapConfiguration, typeof(MapConfiguration), false);
             if (EditorGUI.EndChangeCheck())
             {
                 LoadFromAsset();
@@ -103,8 +103,8 @@ namespace Dafral.Grid.Editor
             }
             if (GUILayout.Button("Clear All"))
             {
-                if (_levelData != null)
-                    Undo.RecordObject(_levelData, "Clear All Tiles");
+                if (_mapConfiguration != null)
+                    Undo.RecordObject(_mapConfiguration, "Clear All Tiles");
                 _tiles.Clear();
                 SceneView.RepaintAll();
             }
@@ -112,12 +112,12 @@ namespace Dafral.Grid.Editor
 
             EditorGUILayout.Space(4);
 
-            GUI.enabled = _levelData != null;
+            GUI.enabled = _mapConfiguration != null;
             if (GUILayout.Button("Save to Asset", GUILayout.Height(30)))
                 SaveToAsset();
             GUI.enabled = true;
 
-            if (_levelData == null)
+            if (_mapConfiguration == null)
             {
                 EditorGUILayout.HelpBox(
                     "Assign a LevelDataConfiguration asset to save.",

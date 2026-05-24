@@ -3,7 +3,7 @@ using Dafral.Events;
 using Dafral.Services;
 using UnityEngine;
 
-namespace Dafral.Grid
+namespace Dafral.Game.Map
 {
     public class GridVisualizer : MonoBehaviour
     {

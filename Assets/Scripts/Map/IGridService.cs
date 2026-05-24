@@ -1,12 +1,12 @@
 using UnityEngine;
 
-namespace Dafral.Grid
+namespace Dafral.Game.Map
 {
     public interface IGridService
     {
         GridData Grid { get; }
         GridCoordinateConverter CoordinateConverter { get; }
-        void LoadLevel(LevelDataConfiguration levelData);
+        void LoadMap(MapConfiguration mapData);
         bool TryMoveEntity(IGridEntity entity, Vector2Int direction);
         bool TryPlaceEntity(IGridEntity entity, Vector2Int position);
         void RemoveEntity(IGridEntity entity);

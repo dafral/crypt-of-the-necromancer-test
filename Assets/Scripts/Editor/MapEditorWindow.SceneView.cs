@@ -1,13 +1,13 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Dafral.Grid.Editor
+namespace Dafral.Game.Map.Editor
 {
-    public partial class LevelEditorWindow
+    public partial class MapEditorWindow
     {
         private void OnSceneGUI(SceneView sceneView)
         {
-            if (_levelData == null) return;
+            if (_mapConfiguration == null) return;
 
             DrawGrid();
             DrawTiles();

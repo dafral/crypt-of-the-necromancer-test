@@ -1,11 +1,10 @@
 using System.Linq;
-using Dafral.Grid;
 using UnityEditor;
 using UnityEngine;
 
-namespace Dafral.Grid.Editor
+namespace Dafral.Game.Map.Editor
 {
-    public partial class LevelEditorWindow
+    public partial class MapEditorWindow
     {
         private void RefreshPalette()
         {
@@ -19,14 +18,14 @@ namespace Dafral.Grid.Editor
         private void LoadFromAsset()
         {
             _tiles.Clear();
-            if (_levelData == null) return;
+            if (_mapConfiguration == null) return;
 
-            _gridSize = _levelData.GridSize;
-            _cellSize = _levelData.CellSize;
+            _gridSize = _mapConfiguration.GridSize;
+            _cellSize = _mapConfiguration.CellSize;
 
-            if (_levelData.Tiles != null)
+            if (_mapConfiguration.Tiles != null)
             {
-                foreach (var entry in _levelData.Tiles)
+                foreach (var entry in _mapConfiguration.Tiles)
                 {
                     if (entry.TileType != null)
                         _tiles[entry.Position] = entry.TileType;
@@ -36,23 +35,23 @@ namespace Dafral.Grid.Editor
 
         private void SaveToAsset()
         {
-            if (_levelData == null) return;
+            if (_mapConfiguration == null) return;
 
-            Undo.RecordObject(_levelData, "Save Level Data");
+            Undo.RecordObject(_mapConfiguration, "Save Level Data");
 
             var entries = _tiles
-                .Select(kvp => new LevelDataConfiguration.TileEntry
+                .Select(kvp => new MapConfiguration.TileEntry
                 {
                     Position = kvp.Key,
                     TileType = kvp.Value
                 })
                 .ToArray();
 
-            _levelData.SetData(_gridSize, _cellSize, entries);
-            EditorUtility.SetDirty(_levelData);
+            _mapConfiguration.SetData(_gridSize, _cellSize, entries);
+            EditorUtility.SetDirty(_mapConfiguration);
             AssetDatabase.SaveAssets();
 
-            Debug.Log($"[Level Editor] Saved {entries.Length} tiles to {AssetDatabase.GetAssetPath(_levelData)}");
+            Debug.Log($"[Level Editor] Saved {entries.Length} tiles to {AssetDatabase.GetAssetPath(_mapConfiguration)}");
         }
 
         private void FillAll()
@@ -60,8 +59,8 @@ namespace Dafral.Grid.Editor
             var brush = GetCurrentBrush();
             if (brush == null) return;
 
-            if (_levelData != null)
-                Undo.RecordObject(_levelData, "Fill All Tiles");
+            if (_mapConfiguration != null)
+                Undo.RecordObject(_mapConfiguration, "Fill All Tiles");
 
             for (int x = 0; x < _gridSize.x; x++)
             {

@@ -1,15 +1,14 @@
 using System.Collections.Generic;
-using Dafral.Grid;
 using UnityEditor;
 using UnityEngine;
 
-namespace Dafral.Grid.Editor
+namespace Dafral.Game.Map.Editor
 {
-    public partial class LevelEditorWindow : EditorWindow
+    public partial class MapEditorWindow : EditorWindow
     {
         private enum BrushMode { Paint, Erase }
 
-        [SerializeField] private LevelDataConfiguration _levelData;
+        [SerializeField] private MapConfiguration _mapConfiguration;
         [SerializeField] private Vector2Int _gridSize = new(10, 10);
         [SerializeField] private float _cellSize = 1f;
 
@@ -23,7 +22,7 @@ namespace Dafral.Grid.Editor
         [MenuItem("Dafral/Level Editor")]
         public static void ShowWindow()
         {
-            var window = GetWindow<LevelEditorWindow>("Level Editor");
+            var window = GetWindow<MapEditorWindow>("Level Editor");
             window.minSize = new Vector2(280, 400);
         }
 
