@@ -176,7 +176,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyHealth: {fileID: 5434644798568552438}
-  _enemyMovement: {fileID: 7817236957589602844}
+  _enemyMovement: {fileID: 6994965131075529734}
+  _enemyInteract: {fileID: 0}
 --- !u!1 &6340056193794095522
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8179864497033902922}
-  - component: {fileID: 7817236957589602844}
+  - component: {fileID: 6994965131075529734}
   m_Layer: 0
   m_Name: Movement
   m_TagString: Untagged
@@ -209,7 +210,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3016480031292815397}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7817236957589602844
+--- !u!114 &6994965131075529734
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -218,6 +219,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6340056193794095522}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 590880735c195844b9575cd3c975b0b4, type: 3}
+  m_Script: {fileID: 11500000, guid: d5af5c3115b439d4fa096f422656d5c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -11,14 +11,25 @@ namespace Dafral.Enemies
         [SerializeField] private EnemyInteract _enemyInteract;
 
         private Vector2Int _gridPosition;
-        private IGridService _gridService;
 
         public Vector2Int GridPosition => _gridPosition;
         public GridEntityType EntityType => GridEntityType.Enemy;
         public bool IsMoving => false;
 
-        public void Interact(IGridEntity otherEntity)
+        public void Initialize(EnemyData enemyData)
         {
+            var serviceLocator = ServiceLocator.Instance;
+            _gridPosition = serviceLocator.GetService<IGridService>().GetGridPosition(transform.position);
+            serviceLocator.GetService<IGridService>().TryPlaceEntity(this, _gridPosition);
+            _enemyHealth.Initialize(enemyData, OnDeath);
+            _enemyMovement.Initialize(this, enemyData);
+        }
+
+        private void OnDeath()
+        {
+            Dispose();
+            ServiceLocator.Instance.GetService<IGridService>().RemoveEntity(this);
+            Destroy(gameObject);
         }
 
         public void SetGridPosition(Vector2Int position)
@@ -26,9 +37,23 @@ namespace Dafral.Enemies
             _gridPosition = position;
         }
 
+        public void Interact(IGridEntity otherEntity)
+        {
+        }
+
         public bool TryMove(Vector2Int direction)
         {
-            return false;
+            if (direction == Vector2Int.zero)
+                return false;
+
+            var gridService = ServiceLocator.Instance.GetService<IGridService>();
+            bool success = gridService.TryMoveEntity(this, direction);
+            if (success)
+            {
+                transform.position = gridService.GetWorldPosition(_gridPosition);
+            }
+
+            return success;
         }
 
         public void TakeDamage(int damage)
@@ -36,18 +61,10 @@ namespace Dafral.Enemies
             _enemyHealth.TakeDamage(damage);
         }
 
-        private void Start()
+        public void Dispose()
         {
-            _gridService = ServiceLocator.Instance.GetService<IGridService>();
-            _gridPosition = _gridService.GetGridPosition(transform.position);
-            _gridService.TryPlaceEntity(this, _gridPosition);
-            _enemyHealth.Initialize(OnDeath);
-        }
-
-        private void OnDeath()
-        {
-            _gridService.RemoveEntity(this);
-            Destroy(gameObject);
+            _enemyHealth.Dispose();
+            _enemyMovement.Dispose();
         }
     }
 }
