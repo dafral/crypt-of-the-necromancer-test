@@ -9,12 +9,10 @@ namespace Dafral.Enemies
         [SerializeField] private EnemyHealth _enemyHealth;
         [SerializeField] private EnemyMovement _enemyMovement;
         [SerializeField] private EnemyInteract _enemyInteract;
-
         private Vector2Int _gridPosition;
 
         public Vector2Int GridPosition => _gridPosition;
         public GridEntityType EntityType => GridEntityType.Enemy;
-        public bool IsMoving => false;
 
         public void Initialize(EnemyData enemyData)
         {

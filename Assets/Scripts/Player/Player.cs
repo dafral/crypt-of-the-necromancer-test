@@ -11,17 +11,16 @@ namespace Dafral.Player
         private Vector2Int _gridPosition;
 
         public Vector2Int GridPosition => _gridPosition;
-        public bool IsMoving => _playerMovement.IsMoving;
-
         public GridEntityType EntityType => GridEntityType.Player;
 
-        private void Start()
+        public void Initialize(PlayerData playerData)
         {
             var gridService = ServiceLocator.Instance.GetService<IGridService>();
             _gridPosition = gridService.GetGridPosition(transform.position);
             gridService.TryPlaceEntity(this, _gridPosition);
+
             _playerInteract.Initialize(new PlayerCombat());
-            _playerMovement.Initialize(this, transform);
+            _playerMovement.Initialize(this, transform, playerData.Movement);
         }
 
         public void SetGridPosition(Vector2Int position)
@@ -31,7 +30,8 @@ namespace Dafral.Player
 
         public bool TryMove(Vector2Int direction)
         {
-            return _playerMovement.TryToMove(direction);
+            return true;
+            //return _playerMovement.TryToMove(direction);
         }
 
         public void Interact(IGridEntity otherEntity)

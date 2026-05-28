@@ -13,7 +13,9 @@ namespace Dafral.Player
 
         public static Player CreatePlayer(Vector2 position)
         {
-            return Object.Instantiate(_playerConfiguration.Prefab, position, Quaternion.identity);
+            var player = Object.Instantiate(_playerConfiguration.Prefab, position, Quaternion.identity);
+            player.Initialize(_playerConfiguration.Data);
+            return player;
         }
     }
 }

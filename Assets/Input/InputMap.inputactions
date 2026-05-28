@@ -16,7 +16,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MoveUp",
+                    "name": "Jump",
                     "type": "Button",
                     "id": "e2b9de79-1ad4-4198-b103-11d7af779f1e",
                     "expectedControlType": "",
@@ -34,7 +34,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MoveDown",
+                    "name": "Wait",
                     "type": "Button",
                     "id": "6c43f28d-7ff1-4eea-b3c4-2ab49c5af383",
                     "expectedControlType": "",
@@ -71,7 +71,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "MoveUp",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -93,7 +93,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "MoveDown",
+                    "action": "Wait",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

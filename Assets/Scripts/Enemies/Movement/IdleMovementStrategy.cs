@@ -1,12 +1,12 @@
-using Dafral.Game.Map;
+using UnityEngine;
 
 namespace Dafral.Enemies
 {
     public class IdleMovementStrategy : IEnemyMovementStrategy
     {
-        public bool TryMove()
+        public Vector2Int? GetNextDirection()
         {
-            return false;
+            return null;
         }
     }
 }

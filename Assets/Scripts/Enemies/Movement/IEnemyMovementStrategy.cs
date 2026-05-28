@@ -1,9 +1,9 @@
-using Dafral.Game.Map;
+using UnityEngine;
 
 namespace Dafral.Enemies
 {
     public interface IEnemyMovementStrategy
     {
-        bool TryMove();
+        Vector2Int? GetNextDirection();
     }
 }

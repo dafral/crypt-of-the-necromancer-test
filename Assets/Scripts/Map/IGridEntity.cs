@@ -6,7 +6,6 @@ namespace Dafral.Game.Map
     {
         Vector2Int GridPosition { get; }
         GridEntityType EntityType { get; }
-        bool IsMoving { get; }
         bool TryMove(Vector2Int direction);
         void SetGridPosition(Vector2Int position);
         void Interact(IGridEntity otherEntity);
