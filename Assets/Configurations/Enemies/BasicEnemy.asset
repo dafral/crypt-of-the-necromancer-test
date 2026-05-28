@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccc7db124ffe0614f983311268afa9c8, type: 3}
-  m_Name: Level1
+  m_Script: {fileID: 11500000, guid: a73083fae430beb40b3468e3b727bf25, type: 3}
+  m_Name: BasicEnemy
   m_EditorClassIdentifier: 
-  _levelData:
-    RhythmTempo: 120
-  _mapConfiguration: {fileID: 11400000, guid: 6cc641f88b97cf649834b396e1e80b3c, type: 2}
+  Id: enemy_basic
+  Prefab: {fileID: 121524609088405402, guid: 764e45de85653c146a0f4501be7dd646, type: 3}
+  Data:
+    MovementStrategy: 1
+    TilesToMove: 1
+    Health: 2

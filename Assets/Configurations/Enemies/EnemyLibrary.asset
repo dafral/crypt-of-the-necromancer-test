@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccc7db124ffe0614f983311268afa9c8, type: 3}
-  m_Name: Level1
+  m_Script: {fileID: 11500000, guid: 69eba759db6fdf34c8978e41884b03a0, type: 3}
+  m_Name: EnemyLibrary
   m_EditorClassIdentifier: 
-  _levelData:
-    RhythmTempo: 120
-  _mapConfiguration: {fileID: 11400000, guid: 6cc641f88b97cf649834b396e1e80b3c, type: 2}
+  Enemies:
+  - {fileID: 11400000, guid: 0207cf3c16834bd47ae4eb591d96bd6a, type: 2}

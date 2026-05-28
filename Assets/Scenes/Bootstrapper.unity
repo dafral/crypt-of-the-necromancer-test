@@ -211,6 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerConfiguration: {fileID: 11400000, guid: f7a60ec77af4b6f43ac9817e18655d59, type: 2}
+  _enemyLibrary: {fileID: 11400000, guid: f0bbd5ff31a6bd041937744c8b54bfd5, type: 2}
   _uiConfiguration: {fileID: 11400000, guid: 32cf8ea893c0ed640add93030f6b1951, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

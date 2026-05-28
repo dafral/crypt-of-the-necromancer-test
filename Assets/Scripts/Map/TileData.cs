@@ -8,9 +8,8 @@ namespace Dafral.Game.Map
         public TileConfiguration TileType { get; private set; }
         public IGridEntity OccupyingEntity { get; private set; }
 
-        public bool IsWalkable => TileType != null && TileType.IsWalkable;
+        public bool IsWalkable => TileType.IsWalkable;
         public bool IsOccupied => OccupyingEntity != null;
-        public bool CanBeEntered => IsWalkable && !IsOccupied;
 
         public TileData(Vector2Int position, TileConfiguration tileType)
         {
@@ -21,6 +20,13 @@ namespace Dafral.Game.Map
         public void SetTileType(TileConfiguration tileType)
         {
             TileType = tileType;
+        }
+
+        public TileState GetTileState()
+        {
+            if (IsOccupied) return TileState.Occupied;
+            if (IsWalkable) return TileState.Walkable;
+            return TileState.Unwalkable;
         }
 
         public bool TrySetOccupant(IGridEntity entity)

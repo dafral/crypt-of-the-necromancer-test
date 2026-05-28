@@ -6,11 +6,17 @@ namespace Dafral.Game.Map
 {
     public class GridService : IGridService
     {
+        private readonly IEventService _eventService;
         private GridData _grid;
         private GridCoordinateConverter _coordinateConverter;
 
         public GridData Grid => _grid;
         public GridCoordinateConverter CoordinateConverter => _coordinateConverter;
+
+        public GridService(IEventService eventService)
+        {
+            _eventService = eventService;
+        }
 
         public void LoadMap(MapConfiguration mapData)
         {
@@ -23,8 +29,7 @@ namespace Dafral.Game.Map
                 _grid.SetTile(tileEntry.Position, tileEntry.TileType);
             }
 
-            var eventService = ServiceLocator.Instance.GetService<IEventService>();
-            eventService.RaiseEvent(new OnGridLoaded(_grid, _coordinateConverter));
+            _eventService.RaiseEvent(new OnGridLoaded(_grid, _coordinateConverter));
         }
 
         public bool TryMoveEntity(IGridEntity entity, Vector2Int direction)
@@ -34,8 +39,7 @@ namespace Dafral.Game.Map
 
             if (success)
             {
-                var eventService = ServiceLocator.Instance.GetService<IEventService>();
-                eventService.RaiseEvent(new OnEntityGridPositionChanged(entity, targetPosition - direction, targetPosition));
+                _eventService.RaiseEvent(new OnEntityGridPositionChanged(entity, targetPosition - direction, targetPosition));
             }
 
             return success;
