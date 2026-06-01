@@ -110,7 +110,7 @@ MonoBehaviour:
   - Position: {x: 16, y: 1}
     TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
   - Position: {x: 17, y: 1}
-    TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
+    TileType: {fileID: 11400000, guid: d44774eb5a964db48adf107fc58cfcae, type: 2}
   - Position: {x: 18, y: 1}
     TileType: {fileID: 11400000, guid: 75d5f7341b63ddd459afdc5540d45401, type: 2}
   - Position: {x: 18, y: 3}

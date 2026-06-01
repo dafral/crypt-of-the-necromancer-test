@@ -11,7 +11,7 @@ namespace Dafral.Enemies
             _enemyLibrary = enemyLibrary;
         }
 
-        public static IEnemy CreateEnemy(string enemyId,Vector2 position)
+        public static Enemy CreateEnemy(string enemyId, Vector2 position)
         {
             EnemyConfiguration enemyConfiguration = _enemyLibrary.GetEnemyConfigurationById(enemyId);
             var enemy = Object.Instantiate(enemyConfiguration.Prefab, position, Quaternion.identity);

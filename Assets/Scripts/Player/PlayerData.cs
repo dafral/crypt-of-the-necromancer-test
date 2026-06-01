@@ -6,6 +6,7 @@ namespace Dafral.Player
     public struct PlayerData
     {
         public int Health;
+        public int Damage;
         public PlayerMovementData Movement;
     }
 }
