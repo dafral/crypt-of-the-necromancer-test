@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanvasPrefab: {fileID: 2269477551153039104, guid: 553824a6565a6ed419275d12e71c05e3, type: 3}
   RhythmBarPrefab: {fileID: 4932031724559819502, guid: 6c79a6c7eb6f03a46bcf949fe575cd98, type: 3}
+  PlayerHealthBarPrefab: {fileID: -5486969445868809561, guid: 1963744ae29038746baebdfa022d44d6, type: 3}

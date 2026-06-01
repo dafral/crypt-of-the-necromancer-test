@@ -15,6 +15,7 @@ MonoBehaviour:
   Prefab: {fileID: 503765276598367642, guid: 9ba669653cbd9994f9a394497be44d8f, type: 3}
   Data:
     Health: 3
+    Damage: 1
     Movement:
       MoveDuration: 0.1
       FallStepDuration: 0.05
