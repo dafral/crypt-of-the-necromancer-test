@@ -17,7 +17,7 @@ namespace Dafral.Game.Map
         [SerializeField] private GameObject _prefab;
 
         public string Id => _id;
-        public bool IsWalkable => _isWalkable;
+        public virtual bool IsWalkable => _isWalkable;
         public Sprite Sprite => _sprite;
         public Color EditorColor => _editorColor;
         public GameObject Prefab => _prefab;
