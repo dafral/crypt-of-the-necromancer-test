@@ -31,5 +31,11 @@ namespace Dafral.Services
             PlayerHealthBarController healthBarController = Object.Instantiate(_uiConfiguration.PlayerHealthBarPrefab, _canvas.transform);
             healthBarController.Initialize();
         }
+
+        public void ShowGameOverScreen(bool isVictory)
+        {
+            GameOverScreenController gameOverScreenController = Object.Instantiate(_uiConfiguration.GameOverScreenPrefab, _canvas.transform);
+            gameOverScreenController.Initialize(isVictory);
+        }
     }
 }

@@ -27,13 +27,13 @@ namespace Dafral.Enemies
 
         private void OnDeath()
         {
-            Dispose();
             _gridService.RemoveEntity(this);
             Destroy(gameObject);
         }
 
-        public void Dispose()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
             _health.OnDied -= OnDeath;
             _enemyMovement.Dispose();
         }

@@ -6,5 +6,6 @@ namespace Dafral.Services
     {
         void CreateRhythmBar(RhythmController rhythmController);
         void CreatePlayerHealthBar();
+        void ShowGameOverScreen(bool isVictory);
     }
 }

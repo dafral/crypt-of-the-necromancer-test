@@ -20,6 +20,8 @@ namespace Dafral.Game.Map
 
         public void LoadMap(MapConfiguration mapData)
         {
+            _eventService.RaiseEvent(new OnMapCleared());
+
             _coordinateConverter = new GridCoordinateConverter(mapData.CellSize);
             _grid = new GridData(mapData.GridSize);
 

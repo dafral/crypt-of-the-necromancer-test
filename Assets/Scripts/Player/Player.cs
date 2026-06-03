@@ -1,7 +1,6 @@
 using Dafral.Events;
 using Dafral.Game.Combat;
 using Dafral.Game.Map;
-using Dafral.Services;
 using UnityEngine;
 
 namespace Dafral.Player
@@ -10,14 +9,12 @@ namespace Dafral.Player
     {
         [SerializeField] private PlayerMovement _playerMovement;
         [SerializeField] private EntityInteract _entityInteract;
-        private IEventService _eventService;
 
         public override GridEntityType EntityType => GridEntityType.Player;
 
         public void Initialize(PlayerData playerData)
         {
             RegisterOnGrid();
-            _eventService = ServiceLocator.Instance.GetService<IEventService>();
 
             _entityInteract.Initialize(GridEntityType.Enemy, new Combat(playerData.Damage));
             _playerMovement.Initialize(this, transform, playerData.Movement);
