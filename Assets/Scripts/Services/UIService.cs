@@ -25,5 +25,11 @@ namespace Dafral.Services
             RhythmBarController rhythmBarController = Object.Instantiate(_uiConfiguration.RhythmBarPrefab, _canvas.transform);
             rhythmBarController.Initialize(rhythmController);
         }
+
+        public void CreatePlayerHealthBar()
+        {
+            PlayerHealthBarController healthBarController = Object.Instantiate(_uiConfiguration.PlayerHealthBarPrefab, _canvas.transform);
+            healthBarController.Initialize();
+        }
     }
 }

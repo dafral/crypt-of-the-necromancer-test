@@ -8,10 +8,10 @@ namespace Dafral.CustomInput
     public class GameplayInputReader : InputReader, InputMap.IGameplayActions
     {
         public override InputMode Mode => InputMode.Gameplay;
-        public event Action OnMoveUpInput = delegate { };
         public event Action OnMoveLeftInput = delegate { };
-        public event Action OnMoveDownInput = delegate { };
         public event Action OnMoveRightInput = delegate { };
+        public event Action OnJumpInput = delegate { };
+        public event Action OnWaitInput = delegate { };
         public event Action OnPauseInput = delegate { };
 
         private Dictionary<GameplayInputActions, Action<Action>> _addCallbacks;
@@ -27,41 +27,43 @@ namespace Dafral.CustomInput
         {
             _addCallbacks = new Dictionary<GameplayInputActions, Action<Action>>
             {
-                { GameplayInputActions.MoveUp, callback => OnMoveUpInput += callback },
+                { GameplayInputActions.Jump, callback => OnJumpInput += callback },
                 { GameplayInputActions.MoveLeft, callback => OnMoveLeftInput += callback },
-                { GameplayInputActions.MoveDown, callback => OnMoveDownInput += callback },
                 { GameplayInputActions.MoveRight, callback => OnMoveRightInput += callback },
+                { GameplayInputActions.Wait, callback => OnWaitInput += callback },
                 { GameplayInputActions.Pause, callback => OnPauseInput += callback },
             };
 
             _removeCallbacks = new Dictionary<GameplayInputActions, Action<Action>>
             {
-                { GameplayInputActions.MoveUp, callback => OnMoveUpInput -= callback },
+                { GameplayInputActions.Jump, callback => OnJumpInput -= callback },
                 { GameplayInputActions.MoveLeft, callback => OnMoveLeftInput -= callback },
-                { GameplayInputActions.MoveDown, callback => OnMoveDownInput -= callback },
                 { GameplayInputActions.MoveRight, callback => OnMoveRightInput -= callback },
+                { GameplayInputActions.Wait, callback => OnWaitInput -= callback },
                 { GameplayInputActions.Pause, callback => OnPauseInput -= callback },
             };
         }
 
-        public void OnMoveUp(InputAction.CallbackContext context)
-        {
-            OnPerformedEvent(OnMoveUpInput, context);
-        }
+
 
         public void OnMoveLeft(InputAction.CallbackContext context)
         {
             OnPerformedEvent(OnMoveLeftInput, context);
         }
 
-        public void OnMoveDown(InputAction.CallbackContext context)
-        {
-            OnPerformedEvent(OnMoveDownInput, context);
-        }
-
         public void OnMoveRight(InputAction.CallbackContext context)
         {
             OnPerformedEvent(OnMoveRightInput, context);
+        }
+
+        public void OnJump(InputAction.CallbackContext context)
+        {
+            OnPerformedEvent(OnJumpInput, context);
+        }
+
+        public void OnWait(InputAction.CallbackContext context)
+        {
+            OnPerformedEvent(OnWaitInput, context);
         }
 
         public void OnPause(InputAction.CallbackContext context)

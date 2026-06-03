@@ -1,46 +1,45 @@
+using Dafral.Events;
+using Dafral.Game.Combat;
 using Dafral.Game.Map;
 using Dafral.Services;
 using UnityEngine;
 
 namespace Dafral.Player
 {
-    public class Player : MonoBehaviour, IPlayer, IGridEntity
+    public class Player : GridEntity
     {
         [SerializeField] private PlayerMovement _playerMovement;
-        [SerializeField] private PlayerInteract _playerInteract;
-        private Vector2Int _gridPosition;
+        [SerializeField] private EntityInteract _entityInteract;
+        private IEventService _eventService;
 
-        public Vector2Int GridPosition => _gridPosition;
-        public bool IsMoving => _playerMovement.IsMoving;
+        public override GridEntityType EntityType => GridEntityType.Player;
 
-        public GridEntityType EntityType => GridEntityType.Player;
-
-        private void Start()
+        public void Initialize(PlayerData playerData)
         {
-            var gridService = ServiceLocator.Instance.GetService<IGridService>();
-            _gridPosition = gridService.GetGridPosition(transform.position);
-            gridService.TryPlaceEntity(this, _gridPosition);
-            _playerInteract.Initialize(new PlayerCombat());
-            _playerMovement.Initialize(this, transform);
+            RegisterOnGrid();
+            _eventService = ServiceLocator.Instance.GetService<IEventService>();
+
+            _entityInteract.Initialize(GridEntityType.Enemy, new Combat(playerData.Damage));
+            _playerMovement.Initialize(this, transform, playerData.Movement);
+
+            _health.OnHealthChanged += OnHealthChanged;
+            _health.OnDied += OnDied;
+            _health.Initialize(playerData.Health);
         }
 
-        public void SetGridPosition(Vector2Int position)
+        public override void Interact(IGridEntity otherEntity)
         {
-            _gridPosition = position;
+            _entityInteract.Interact(otherEntity);
         }
 
-        public bool TryMove(Vector2Int direction)
+        private void OnHealthChanged(int currentHealth, int maxHealth)
         {
-            return _playerMovement.TryToMove(direction);
+            _eventService.RaiseEvent(new OnPlayerHealthChanged(currentHealth, maxHealth));
         }
 
-        public void Interact(IGridEntity otherEntity)
+        private void OnDied()
         {
-            _playerInteract.Interact(otherEntity);
-        }
-
-        public void TakeDamage(int damage)
-        {
+            _eventService.RaiseEvent(new OnPlayerDied());
         }
     }
 }

@@ -16,5 +16,6 @@ MonoBehaviour:
   Prefab: {fileID: 121524609088405402, guid: 764e45de85653c146a0f4501be7dd646, type: 3}
   Data:
     MovementStrategy: 1
-    TilesToMove: 1
+    BeatsToMove: 2
     Health: 2
+    Damage: 1

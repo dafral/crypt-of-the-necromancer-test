@@ -44,10 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca41f01b096030245a7fef71906e410b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveDuration: 0.1
-  _earlyWindowDuration: 0.15
-  _lateWindowDuration: 0.15
-  _perfectWindowDuration: 0.05
 --- !u!1 &1117838428129733813
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,6 +254,7 @@ Transform:
   - {fileID: 8403106903874767644}
   - {fileID: 2910686656196270832}
   - {fileID: 3940051871095525741}
+  - {fileID: 6199639466655928372}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &503765276598367642
@@ -272,8 +269,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d0403d35f6e9914487f0c6eff56be4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health: {fileID: 6245197314323619878}
   _playerMovement: {fileID: 7797197873579971539}
-  _playerInteract: {fileID: 7922315976548171261}
+  _entityInteract: {fileID: 6448004507147616917}
 --- !u!1 &8413162839109555277
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,6 +282,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3940051871095525741}
   - component: {fileID: 7922315976548171261}
+  - component: {fileID: 6448004507147616917}
   m_Layer: 0
   m_Name: Interact
   m_TagString: Untagged
@@ -316,5 +315,61 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 098649843ac9dcf4c81b52a30a8a3f8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6448004507147616917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8413162839109555277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26fa9c4ffcac75e47a5a7322b6e24dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &8975369902671811787
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6199639466655928372}
+  - component: {fileID: 6245197314323619878}
+  m_Layer: 0
+  m_Name: Health
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6199639466655928372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8975369902671811787}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2913146958827462892}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6245197314323619878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8975369902671811787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69a844451847deb44ae3cb5838b16e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

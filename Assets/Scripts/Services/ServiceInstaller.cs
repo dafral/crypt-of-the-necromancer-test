@@ -9,7 +9,8 @@ namespace Dafral.Services
             var eventService = ServiceLocator.Instance.RegisterService<IEventService>(new EventService());
             ServiceLocator.Instance.RegisterService<IInputService>(new InputService(eventService));
             ServiceLocator.Instance.RegisterService<IUIService>(new UIService(uiConfiguration));
-            ServiceLocator.Instance.RegisterService<IGridService>(new GridService(eventService));
+            var gridService = ServiceLocator.Instance.RegisterService<IGridService>(new GridService(eventService));
+            ServiceLocator.Instance.RegisterService<HazardService>(new HazardService(eventService, gridService));
         }
     }
 }

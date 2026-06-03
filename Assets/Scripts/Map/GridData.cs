@@ -45,7 +45,7 @@ namespace Dafral.Game.Map
 
         public bool TryMoveEntity(IGridEntity entity, Vector2Int targetPosition)
         {
-            if (!IsWithinBounds(targetPosition)) 
+            if (!IsWithinBounds(targetPosition))
             {
                 return false;
             }
@@ -53,25 +53,29 @@ namespace Dafral.Game.Map
             var tile = GetTile(targetPosition);
             var tileState = tile.GetTileState();
 
-            if(tileState == TileState.Occupied)
+            if (tileState == TileState.Occupied)
             {
                 entity.Interact(tile.OccupyingEntity);
                 return false;
             }
 
-            else if(tileState == TileState.Walkable)
+            if (tileState == TileState.Unwalkable)
             {
-                var originTile = GetTile(entity.GridPosition);
-                var targetTile = GetTile(targetPosition);
-                if (!targetTile.TrySetOccupant(entity)) 
+                if (tile.TileType is ITileHazard hazard)
                 {
-                    return false;
+                    hazard.ApplyHazard(entity);
                 }
-
-                originTile?.ClearOccupant();
-                entity.SetGridPosition(targetPosition);
+                return false;
             }
 
+            var originTile = GetTile(entity.GridPosition);
+            if (!tile.TrySetOccupant(entity))
+            {
+                return false;
+            }
+
+            originTile?.ClearOccupant();
+            entity.SetGridPosition(targetPosition);
             return true;
         }
 

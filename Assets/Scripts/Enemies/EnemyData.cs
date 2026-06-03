@@ -12,5 +12,6 @@ namespace Dafral.Enemies
 
         [Header("Combat")]
         public int Health;
+        public int Damage;
     }
 }
