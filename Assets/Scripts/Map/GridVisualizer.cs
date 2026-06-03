@@ -80,24 +80,26 @@ namespace Dafral.Game.Map
             }
             else
             {
-                tileObject = CreateDefaultTileVisual(worldPos, tileData.TileType);
+                tileObject = CreateDefaultTileVisual(worldPos, tileData.TileType, gridPosition);
             }
 
             tileObject.name = $"Tile_{gridPosition.x}_{gridPosition.y}";
             _tileVisuals[gridPosition] = tileObject;
         }
 
-        private GameObject CreateDefaultTileVisual(Vector3 worldPos, TileConfiguration tileType)
+        private GameObject CreateDefaultTileVisual(Vector3 worldPos, TileConfiguration tileType, Vector2Int gridPosition)
         {
             var tileObject = new GameObject();
             tileObject.transform.SetParent(GetParent());
             tileObject.transform.position = worldPos;
 
-            var spriteRenderer = tileObject.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = tileType.Sprite;
-            spriteRenderer.color = tileType.Sprite != null ? Color.white : tileType.EditorColor;
+            var sprite = tileType.GetSpriteForCell(gridPosition);
 
-            var scale = GetScaleForCell(tileType.Sprite);
+            var spriteRenderer = tileObject.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = sprite;
+            spriteRenderer.color = sprite != null ? Color.white : tileType.EditorColor;
+
+            var scale = GetScaleForCell(sprite);
             tileObject.transform.localScale = new Vector3(scale, scale, 1f);
 
             return tileObject;

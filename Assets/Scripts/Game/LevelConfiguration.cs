@@ -11,5 +11,10 @@ namespace Dafral.Game
 
         public LevelData LevelData => _levelData;
         public MapConfiguration MapConfiguration => _mapConfiguration;
+
+        public void SetLevelData(LevelData levelData)
+        {
+            _levelData = levelData;
+        }
     }
 }
