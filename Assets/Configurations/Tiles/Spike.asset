@@ -16,5 +16,5 @@ MonoBehaviour:
   _isWalkable: 1
   _sprite: {fileID: 309037133, guid: 8d16ab5b639324b4a973d9be6c1b9969, type: 3}
   _editorColor: {r: 1, g: 0, b: 0, a: 1}
-  _prefab: {fileID: 0}
+  _prefab: {fileID: 7400000000000000001, guid: 188de9107dbd4a15b74ab1e367faaef0, type: 3}
   _damage: 1
