@@ -20,16 +20,18 @@ namespace Dafral.Player
         public void Initialize(PlayerData playerData)
         {
             RegisterOnGrid();
+            InitializeControllers(playerData);
+            _eventService.RaiseEvent(new OnPlayerSpawned(this));
+        }
 
+        private void InitializeControllers(PlayerData playerData)
+        {
             EntityInteract.Initialize(GridEntityType.Enemy, new Combat(playerData.Damage));
             PlayerMovement.Initialize(this, this, transform, playerData.Movement);
             PlayerAnimation.Initialize();
-
             Health.OnHealthChanged += OnHealthChanged;
             Health.OnDied += OnDied;
             Health.Initialize(playerData.Health);
-
-            _eventService.RaiseEvent(new OnPlayerSpawned(this));
         }
 
         public override void Interact(IGridEntity otherEntity)

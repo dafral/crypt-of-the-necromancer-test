@@ -1,16 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Dafral.Player
+namespace Dafral.Enemies
 {
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public class PlayerAnimation : MonoBehaviour, IPlayerAnimation
+    public class EnemyAnimation : MonoBehaviour, IEnemyAnimation
     {
-        private const string DASH_LEFT_ANIMATION = "Player_Dash_L";
-        private const string DASH_RIGHT_ANIMATION = "Player_Dash_R";
         private const float FLASHING_ANIMATION_DURATION = 0.1f;
-        
+
         private Animator _animator;
         private SpriteRenderer _spriteRenderer;
         private Coroutine _flashingAnimationCoroutine;
@@ -19,23 +17,6 @@ namespace Dafral.Player
         {
             _animator = GetComponent<Animator>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
-            _animator.SetBool("grounded", true);
-        }
-
-        public void OnDash(Vector2Int direction)
-        {
-            string animation = direction.x < 0 ? DASH_LEFT_ANIMATION : DASH_RIGHT_ANIMATION;
-            _animator.Play(animation);
-        }
-
-        public void OnJumped()
-        {
-            _animator.SetBool("grounded", false);
-        }
-
-        public void OnLanded()
-        {
-            _animator.SetBool("grounded", true);
         }
 
         public void OnHealthChanged(int currentHealth, int maxHealth)
@@ -55,7 +36,7 @@ namespace Dafral.Player
             yield return new WaitForSeconds(FLASHING_ANIMATION_DURATION);
             _spriteRenderer.color = Color.white;
         }
-        
+
         public void OnDied()
         {
             _spriteRenderer.color = Color.white;

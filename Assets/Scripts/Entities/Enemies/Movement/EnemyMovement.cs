@@ -5,12 +5,6 @@ using UnityEngine;
 
 namespace Dafral.Enemies
 {
-    public interface IEnemyMovement
-    {
-        void Initialize(IGridEntity gridEntity, EnemyData data);
-        void Dispose();
-    }
-
     public class EnemyMovement : MonoBehaviour, IEnemyMovement
     {
         [SerializeField] private float _moveDuration = 0.1f;

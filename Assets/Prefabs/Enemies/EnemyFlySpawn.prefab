@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5161429010227092858}
   - component: {fileID: 5193368092872422418}
   m_Layer: 0
-  m_Name: EnemySpawn
+  m_Name: EnemyFlySpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f64b3e4dce3a52f4a933dbc51a260d1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyId: enemy_basic
+  _enemyConfiguration: {fileID: 11400000, guid: 9aae903de7d6375488d1fdacc5ee3651, type: 2}

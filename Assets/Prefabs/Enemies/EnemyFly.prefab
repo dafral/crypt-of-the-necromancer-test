@@ -98,6 +98,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3082382419579312860}
   - component: {fileID: 2327661903916537687}
+  - component: {fileID: 6341375280312453055}
+  - component: {fileID: 8104666400568054075}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -161,17 +163,50 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0.033018887, b: 0.033018887, a: 1}
+  m_Sprite: {fileID: 1188621453, guid: fd0be358cb5fa6947964fe9509940520, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.75, y: 0.75}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &6341375280312453055
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4198726345918325236}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4ac1242caa0673746943ab8da61cb61e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8104666400568054075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4198726345918325236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f64ea47c2e931147813c9ce49d9764a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4494555697010531877
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +218,7 @@ GameObject:
   - component: {fileID: 3016480031292815397}
   - component: {fileID: 121524609088405402}
   m_Layer: 0
-  m_Name: BasicEnemy
+  m_Name: EnemyFly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,6 +258,7 @@ MonoBehaviour:
   _health: {fileID: 1428110893300589139}
   _enemyMovement: {fileID: 6994965131075529734}
   _entityInteract: {fileID: 8744161339976059579}
+  _enemyAnimation: {fileID: 8104666400568054075}
 --- !u!1 &6340056193794095522
 GameObject:
   m_ObjectHideFlags: 0

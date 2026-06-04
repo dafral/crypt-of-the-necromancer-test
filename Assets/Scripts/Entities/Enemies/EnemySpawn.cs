@@ -5,11 +5,11 @@ namespace Dafral.Enemies
 {
     public class EnemySpawn : MonoBehaviour
     {
-        [SerializeField] private string _enemyId;
+        [SerializeField] private EnemyConfiguration _enemyConfiguration;
         
         private void Start()
         {
-            ServiceLocator.Instance.GetService<IEntityService>().CreateEnemy(_enemyId, transform.position);
+            ServiceLocator.Instance.GetService<IEntityService>().CreateEnemy(_enemyConfiguration.Id, transform.position);
         }
     }
 }
