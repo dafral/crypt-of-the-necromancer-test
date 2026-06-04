@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Dafral.Game
 {
-    public class Health : MonoBehaviour
+    public class EntityHealth : MonoBehaviour, IEntityHealth
     {
         private int _currentHealth;
         private int _maxHealth;

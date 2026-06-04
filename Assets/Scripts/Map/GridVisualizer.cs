@@ -77,6 +77,7 @@ namespace Dafral.Game.Map
             if (tileData.TileType.Prefab != null)
             {
                 tileObject = Instantiate(tileData.TileType.Prefab, worldPos, Quaternion.identity, GetParent());
+                ApplyCellSprite(tileObject, tileObject.GetComponent<SpriteRenderer>(), tileData.TileType, gridPosition);
             }
             else
             {
@@ -93,16 +94,22 @@ namespace Dafral.Game.Map
             tileObject.transform.SetParent(GetParent());
             tileObject.transform.position = worldPos;
 
-            var sprite = tileType.GetSpriteForCell(gridPosition);
-
             var spriteRenderer = tileObject.AddComponent<SpriteRenderer>();
+            ApplyCellSprite(tileObject, spriteRenderer, tileType, gridPosition);
+
+            return tileObject;
+        }
+
+        private void ApplyCellSprite(GameObject tileObject, SpriteRenderer spriteRenderer, TileConfiguration tileType, Vector2Int gridPosition)
+        {
+            if (spriteRenderer == null) return;
+
+            var sprite = tileType.GetSpriteForCell(gridPosition);
             spriteRenderer.sprite = sprite;
             spriteRenderer.color = sprite != null ? Color.white : tileType.EditorColor;
 
             var scale = GetScaleForCell(sprite);
             tileObject.transform.localScale = new Vector3(scale, scale, 1f);
-
-            return tileObject;
         }
 
         public void UpdateTileVisual(Vector2Int position, TileData tileData)

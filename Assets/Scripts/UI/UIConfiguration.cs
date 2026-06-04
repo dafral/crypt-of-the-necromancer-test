@@ -9,5 +9,6 @@ namespace Dafral.Services
         public Canvas CanvasPrefab;
         public RhythmBarController RhythmBarPrefab;
         public PlayerHealthBarController PlayerHealthBarPrefab;
+        public GameOverScreenController GameOverScreenPrefab;
     }
 }

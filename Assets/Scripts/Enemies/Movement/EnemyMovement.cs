@@ -5,7 +5,13 @@ using UnityEngine;
 
 namespace Dafral.Enemies
 {
-    public class EnemyMovement : MonoBehaviour
+    public interface IEnemyMovement
+    {
+        void Initialize(IGridEntity gridEntity, EnemyData data);
+        void Dispose();
+    }
+
+    public class EnemyMovement : MonoBehaviour, IEnemyMovement
     {
         [SerializeField] private float _moveDuration = 0.1f;
         [SerializeField] private float _fallStepDuration = 0.05f;
@@ -14,8 +20,6 @@ namespace Dafral.Enemies
         private GridMovementController _movementController;
         private int _beatsToMove;
         private int _beatsCount;
-
-        public bool IsMoving => _movementController?.IsMoving ?? false;
 
         public void Initialize(IGridEntity gridEntity, EnemyData data)
         {
