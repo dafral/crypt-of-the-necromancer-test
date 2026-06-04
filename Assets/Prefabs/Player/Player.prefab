@@ -163,7 +163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f63975f9bc0cb4fba5387a8aa27927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 4139927082948303019}
 --- !u!1 &8021552119209492082
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +214,7 @@ MonoBehaviour:
   _health: {fileID: 139024538633314118}
   _playerMovement: {fileID: 7797197873579971539}
   _entityInteract: {fileID: 6448004507147616917}
-  _playerAnimation: {fileID: 0}
+  _playerAnimation: {fileID: 7473511905588310971}
 --- !u!1 &8413162839109555277
 GameObject:
   m_ObjectHideFlags: 0

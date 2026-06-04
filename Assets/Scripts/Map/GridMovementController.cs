@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
 using Dafral.Services;
 using UnityEngine;
 
 namespace Dafral.Game.Map
 {
-    public class GridMovementController
+    public class GridMovementController : IGridMovementController
     {
+        public event Action OnJumped;
+        public event Action OnLanded;
         private readonly IGridEntity _gridEntity;
         private readonly IGridService _gridService;
         private readonly Transform _transform;
@@ -50,6 +53,7 @@ namespace Dafral.Game.Map
             if (_isMoving || height <= 0 || !IsGrounded()) return false;
 
             _moveCoroutine = _coroutineHost.StartCoroutine(JumpCoroutine(height));
+            OnJumped?.Invoke();
             return true;
         }
 
@@ -61,7 +65,7 @@ namespace Dafral.Game.Map
             if (fell)
             {
                 var fallTarget = _gridService.GetWorldPosition(_gridEntity.GridPosition);
-                _moveCoroutine = _coroutineHost.StartCoroutine(AnimateAndFinish(fallTarget, _fallStepDuration));
+                _moveCoroutine = _coroutineHost.StartCoroutine(FallAndCheckLanded(fallTarget, _fallStepDuration));
             }
 
             return fell;
@@ -105,6 +109,20 @@ namespace Dafral.Game.Map
 
             _isMoving = false;
             _moveCoroutine = null;
+
+            if (IsGrounded())
+                OnLanded?.Invoke();
+        }
+
+        private IEnumerator FallAndCheckLanded(Vector3 targetPosition, float duration)
+        {
+            _isMoving = true;
+            yield return LerpTo(targetPosition, duration);
+            _isMoving = false;
+            _moveCoroutine = null;
+
+            if (IsGrounded())
+                OnLanded?.Invoke();
         }
 
         private IEnumerator AnimateAndFinish(Vector3 targetPosition, float duration)

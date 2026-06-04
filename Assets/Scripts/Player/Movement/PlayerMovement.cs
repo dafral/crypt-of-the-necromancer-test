@@ -12,7 +12,7 @@ namespace Dafral.Player
     public class PlayerMovement : MonoBehaviour, IPlayerMovement
     {
         private GameplayInputHandler _inputHandler;
-        private GridMovementController _movementController;
+        private IGridMovementController _movementController;
         private IPlayer _player;
         private PlayerMovementData _movementData;
         private IEventService _eventService;
@@ -35,6 +35,9 @@ namespace Dafral.Player
                 this, 
                 _movementData.MoveDuration, 
                 _movementData.FallStepDuration);
+
+            _movementController.OnJumped += _player.OnJumped;
+            _movementController.OnLanded += _player.OnLanded;
 
             _eventService.Subscribe<OnBeatTriggered>(OnBeatTriggered);
             InitializeInputHandler();
@@ -61,40 +64,39 @@ namespace Dafral.Player
 
         private void OnMoveLeft()
         {
-            TryRhythmMove(Vector2Int.left);
-            _player.OnDash(Vector2Int.left);
+            if (TryRhythmMove(Vector2Int.left))
+            {
+                _player.OnDash(Vector2Int.left);
+            }
         }
 
         private void OnMoveRight()
         {
-            TryRhythmMove(Vector2Int.right);
-            _player.OnDash(Vector2Int.right);
+            if (TryRhythmMove(Vector2Int.right))
+            {
+                _player.OnDash(Vector2Int.right);
+            }
         }
 
         private void OnJump()
         {
             BeatScore score = EvaluateBeatTiming();
             if (score == BeatScore.None) return;
-
-            if(_movementController.TryJump(_movementData.JumpHeight))
-            {
-                _player.OnJumped();
-            }
-
+            _movementController.TryJump(_movementData.JumpHeight);
         }
 
         private void OnWait()
         {
         }
 
-        private void TryRhythmMove(Vector2Int direction)
+        private bool TryRhythmMove(Vector2Int direction)
         {
             BeatScore score = EvaluateBeatTiming();
 
             if (score == BeatScore.None)
-                return;
+                return false;
 
-            _movementController.TryToMove(direction);
+            return _movementController.TryToMove(direction);
         }
 
         private BeatScore EvaluateBeatTiming()
