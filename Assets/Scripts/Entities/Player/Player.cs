@@ -28,6 +28,8 @@ namespace Dafral.Player
             Health.OnHealthChanged += OnHealthChanged;
             Health.OnDied += OnDied;
             Health.Initialize(playerData.Health);
+
+            _eventService.RaiseEvent(new OnPlayerSpawned(this));
         }
 
         public override void Interact(IGridEntity otherEntity)
