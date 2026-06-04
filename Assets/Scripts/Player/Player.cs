@@ -10,23 +10,26 @@ namespace Dafral.Player
         [SerializeField] private PlayerMovement _playerMovement;
         [SerializeField] private EntityInteract _entityInteract;
 
+        private IPlayerMovement PlayerMovement => _playerMovement;
+        private IEntityInteract EntityInteract => _entityInteract;
+
         public override GridEntityType EntityType => GridEntityType.Player;
 
         public void Initialize(PlayerData playerData)
         {
             RegisterOnGrid();
 
-            _entityInteract.Initialize(GridEntityType.Enemy, new Combat(playerData.Damage));
-            _playerMovement.Initialize(this, transform, playerData.Movement);
-
-            _health.OnHealthChanged += OnHealthChanged;
-            _health.OnDied += OnDied;
-            _health.Initialize(playerData.Health);
+            EntityInteract.Initialize(GridEntityType.Enemy, new Combat(playerData.Damage));
+            PlayerMovement.Initialize(this, transform, playerData.Movement);
+            
+            Health.OnHealthChanged += OnHealthChanged;
+            Health.OnDied += OnDied;
+            Health.Initialize(playerData.Health);
         }
 
         public override void Interact(IGridEntity otherEntity)
         {
-            _entityInteract.Interact(otherEntity);
+            EntityInteract.Interact(otherEntity);
         }
 
         private void OnHealthChanged(int currentHealth, int maxHealth)
@@ -37,6 +40,16 @@ namespace Dafral.Player
         private void OnDied()
         {
             _eventService.RaiseEvent(new OnPlayerDied());
+            Despawn();
+        }
+
+        protected override void Despawn()
+        {
+            PlayerMovement.Dispose();
+            EntityInteract.Dispose();
+            Health.OnHealthChanged -= OnHealthChanged;
+            Health.OnDied -= OnDied;
+            base.Despawn();
         }
     }
 }

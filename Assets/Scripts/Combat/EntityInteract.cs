@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Dafral.Game.Combat
 {
-    public class EntityInteract : MonoBehaviour
+    public class EntityInteract : MonoBehaviour, IEntityInteract
     {
         private GridEntityType _targetType;
         private ICombat _combat;
@@ -21,5 +21,12 @@ namespace Dafral.Game.Combat
                 _combat.Attack(otherEntity);
             }
         }
+
+        public void Dispose()
+        {
+            _combat = null;
+            _targetType = GridEntityType.None;
+        }
+
     }
 }

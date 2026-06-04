@@ -5,22 +5,21 @@ namespace Dafral.Game.UI
 {
     public class GameOverScreenController : MonoBehaviour
     {
-        [SerializeField] private GameOverScreenView _gameOverScreenView;
+        [SerializeField] private GameOverScreenView _victoryGameOverScreenView;
+        [SerializeField] private GameOverScreenView _deathGameOverScreenView;
 
         private GameOverScreenModel _model;
 
         public void Initialize(bool isVictory)
         {
             _model = new GameOverScreenModel(isVictory);
-            _gameOverScreenView.StartGameClicked += HandleStartGameClicked;
-            _gameOverScreenView.Render(_model.IsVictory);
-        }
-
-        private void OnDestroy()
-        {
-            if (_gameOverScreenView != null)
+            if (_model.IsVictory)
             {
-                _gameOverScreenView.StartGameClicked -= HandleStartGameClicked;
+                _victoryGameOverScreenView.Open(HandleStartGameClicked);
+            }
+            else
+            {
+                _deathGameOverScreenView.Open(HandleStartGameClicked);
             }
         }
 

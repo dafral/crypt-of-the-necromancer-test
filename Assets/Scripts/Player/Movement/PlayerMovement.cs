@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Dafral.Player
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour, IPlayerMovement
     {
         private GameplayInputHandler _inputHandler;
         private GridMovementController _movementController;
@@ -104,12 +104,7 @@ namespace Dafral.Player
             return BeatScore.TooLate;
         }
 
-        private void OnEnable()
-        {
-            _inputHandler?.Initialize();
-        }
-
-        private void OnDisable()
+        public void Dispose()
         {
             _inputHandler?.Dispose();
             _eventService?.Unsubscribe<OnBeatTriggered>(OnBeatTriggered);

@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 429166645438962796}
   - component: {fileID: 4586360309065242949}
   - component: {fileID: 7618531814434988469}
-  - component: {fileID: 212306111330496674}
   - component: {fileID: 3984928905531389356}
+  - component: {fileID: 3531895929596019255}
+  - component: {fileID: 2952784896267323673}
   m_Layer: 5
   m_Name: GameOverScreen
   m_TagString: Untagged
@@ -80,21 +81,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &212306111330496674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2516102089803626647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b8e2f6c1d3a4e5f9c7b08a2d6f4e913, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _victoryGroup: {fileID: 7861738259147183850}
-  _defeatGroup: {fileID: 8293167341447046251}
-  _startGameButton: {fileID: 4747254766438670637}
 --- !u!114 &3984928905531389356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,7 +93,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3f7a1b5c2e4d6f8a0b13c5e7d9f024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameOverScreenView: {fileID: 212306111330496674}
+  _victoryGameOverScreenView: {fileID: 3531895929596019255}
+  _deathGameOverScreenView: {fileID: 2952784896267323673}
+--- !u!114 &3531895929596019255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2516102089803626647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8e2f6c1d3a4e5f9c7b08a2d6f4e913, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 1954067761032928984}
+  _restartButton: {fileID: 4747254766438670637}
+--- !u!114 &2952784896267323673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2516102089803626647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8e2f6c1d3a4e5f9c7b08a2d6f4e913, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 79067593907881382}
+  _restartButton: {fileID: 4747254766438670637}
 --- !u!1 &3010079546702877617
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,6 +413,7 @@ GameObject:
   - component: {fileID: 4646978581520228560}
   - component: {fileID: 1726405368038940443}
   - component: {fileID: 2813873073761918135}
+  - component: {fileID: 1954067761032928984}
   m_Layer: 0
   m_Name: VictoryGroup
   m_TagString: Untagged
@@ -463,6 +479,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &1954067761032928984
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7861738259147183850}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8293167341447046251
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,8 +502,9 @@ GameObject:
   - component: {fileID: 5351522782912659745}
   - component: {fileID: 6397510129614541791}
   - component: {fileID: 3126323363053064332}
+  - component: {fileID: 79067593907881382}
   m_Layer: 0
-  m_Name: DefeatGroup
+  m_Name: DeathGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -539,6 +568,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &79067593907881382
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8293167341447046251}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &9201035909776358635
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,33 +9,38 @@ namespace Dafral.Enemies
         [SerializeField] private EnemyMovement _enemyMovement;
         [SerializeField] private EntityInteract _entityInteract;
 
+        private IEnemyMovement EnemyMovement => _enemyMovement;
+        private IEntityInteract EntityInteract => _entityInteract;
+
         public override GridEntityType EntityType => GridEntityType.Enemy;
 
         public void Initialize(EnemyData enemyData)
         {
             RegisterOnGrid();
-            _health.Initialize(enemyData.Health);
-            _health.OnDied += OnDeath;
-            _enemyMovement.Initialize(this, enemyData);
-            _entityInteract.Initialize(GridEntityType.Player, new Combat(enemyData.Damage));
+            Health.Initialize(enemyData.Health);
+            Health.OnDied += OnDeath;
+            EnemyMovement.Initialize(this, enemyData);
+            EntityInteract.Initialize(GridEntityType.Player, new Combat(enemyData.Damage));
         }
 
         public override void Interact(IGridEntity otherEntity)
         {
-            _entityInteract.Interact(otherEntity);
+            EntityInteract.Interact(otherEntity);
         }
 
         private void OnDeath()
         {
-            _gridService.RemoveEntity(this);
-            Destroy(gameObject);
+            Despawn();
         }
 
-        protected override void OnDestroy()
+        protected override void Despawn()
         {
-            base.OnDestroy();
-            _health.OnDied -= OnDeath;
-            _enemyMovement.Dispose();
+            Health.OnDied -= OnDeath;
+            EnemyMovement.Dispose();
+            EntityInteract.Dispose();
+            base.Despawn();
         }
+
+
     }
 }

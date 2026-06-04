@@ -7,12 +7,13 @@ namespace Dafral.Game.Map
 {
     public abstract class GridEntity : MonoBehaviour, IGridEntity
     {
-        [SerializeField] protected Health _health;
+        [SerializeField] private EntityHealth _health;
 
         protected IGridService _gridService;
         protected IEventService _eventService;
         private Vector2Int _gridPosition;
 
+        protected IEntityHealth Health => _health;
         public Vector2Int GridPosition => _gridPosition;
         public abstract GridEntityType EntityType { get; }
 

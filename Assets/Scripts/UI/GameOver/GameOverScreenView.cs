@@ -1,36 +1,28 @@
-using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Dafral.Game.UI
 {
     public class GameOverScreenView : MonoBehaviour
     {
-        [SerializeField] private GameObject _victoryGroup;
-        [SerializeField] private GameObject _defeatGroup;
-        [SerializeField] private Button _startGameButton;
+        [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private Button _restartButton;
 
-        public event Action StartGameClicked;
-
-        private void Awake()
+        public void Open(UnityAction restartButtonClicked)
         {
-            _startGameButton.onClick.AddListener(HandleStartGameClicked);
+            _canvasGroup.alpha = 1;
+            _canvasGroup.blocksRaycasts = true;
+            _canvasGroup.interactable = true;
+            _restartButton.onClick.AddListener(restartButtonClicked);
         }
 
-        private void OnDestroy()
+        public void Close()
         {
-            _startGameButton.onClick.RemoveListener(HandleStartGameClicked);
-        }
-
-        public void Render(bool isVictory)
-        {
-            _victoryGroup.SetActive(isVictory);
-            _defeatGroup.SetActive(!isVictory);
-        }
-
-        private void HandleStartGameClicked()
-        {
-            StartGameClicked?.Invoke();
+            _canvasGroup.alpha = 0;
+            _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.interactable = false;
+            _restartButton.onClick.RemoveAllListeners();
         }
     }
 }

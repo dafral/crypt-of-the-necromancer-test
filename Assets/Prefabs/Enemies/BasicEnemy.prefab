@@ -53,8 +53,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2801614331852291149}
-  - component: {fileID: 5434644798568552438}
-  - component: {fileID: 120048854301544880}
+  - component: {fileID: 1428110893300589139}
   m_Layer: 0
   m_Name: Health
   m_TagString: Untagged
@@ -77,7 +76,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3016480031292815397}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5434644798568552438
+--- !u!114 &1428110893300589139
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,19 +85,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4051711261243429790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a6910147f8856945b10d07790a80c4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &120048854301544880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4051711261243429790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69a844451847deb44ae3cb5838b16e8f, type: 3}
+  m_Script: {fileID: 11500000, guid: edc88ac7b3ce5c5488cb5b6a391502d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4198726345918325236
@@ -233,7 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7d76ef82f6e5b448d1e6d6ae5b8883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: {fileID: 120048854301544880}
+  _health: {fileID: 1428110893300589139}
   _enemyMovement: {fileID: 6994965131075529734}
   _entityInteract: {fileID: 8744161339976059579}
 --- !u!1 &6340056193794095522
