@@ -13,18 +13,28 @@ namespace Dafral.Player
     {
         private GameplayInputHandler _inputHandler;
         private GridMovementController _movementController;
+        private IPlayer _player;
         private PlayerMovementData _movementData;
         private IEventService _eventService;
         private RhythmController _rhythmController;
 
-        public void Initialize(IGridEntity gridEntity, Transform playerTransform, PlayerMovementData movementData)
+        public void Initialize(
+            IGridEntity gridEntity, 
+            IPlayer player, 
+            Transform playerTransform, 
+            PlayerMovementData movementData)
         {
+            _player = player;
             _movementData = movementData;
             _rhythmController = FindObjectOfType<RhythmController>();
             _eventService = ServiceLocator.Instance.GetService<IEventService>();
 
             _movementController = new GridMovementController(
-                gridEntity, playerTransform, this, _movementData.MoveDuration, _movementData.FallStepDuration);
+                gridEntity, 
+                playerTransform, 
+                this, 
+                _movementData.MoveDuration, 
+                _movementData.FallStepDuration);
 
             _eventService.Subscribe<OnBeatTriggered>(OnBeatTriggered);
             InitializeInputHandler();
@@ -52,11 +62,13 @@ namespace Dafral.Player
         private void OnMoveLeft()
         {
             TryRhythmMove(Vector2Int.left);
+            _player.OnDash(Vector2Int.left);
         }
 
         private void OnMoveRight()
         {
             TryRhythmMove(Vector2Int.right);
+            _player.OnDash(Vector2Int.right);
         }
 
         private void OnJump()
@@ -64,7 +76,11 @@ namespace Dafral.Player
             BeatScore score = EvaluateBeatTiming();
             if (score == BeatScore.None) return;
 
-            _movementController.TryJump(_movementData.JumpHeight);
+            if(_movementController.TryJump(_movementData.JumpHeight))
+            {
+                _player.OnJumped();
+            }
+
         }
 
         private void OnWait()

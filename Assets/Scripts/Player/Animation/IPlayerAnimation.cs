@@ -2,8 +2,9 @@ using UnityEngine;
 
 namespace Dafral.Player
 {
-    public interface IPlayer
+    public interface IPlayerAnimation
     {
+        void Initialize();
         void OnDash(Vector2Int direction);
         void OnJumped();
         void OnLanded();

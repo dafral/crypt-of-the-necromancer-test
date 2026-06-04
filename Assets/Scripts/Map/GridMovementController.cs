@@ -16,8 +16,6 @@ namespace Dafral.Game.Map
         private bool _isMoving;
         private Coroutine _moveCoroutine;
 
-        public bool IsMoving => _isMoving;
-
         public GridMovementController(
             IGridEntity gridEntity,
             Transform transform,

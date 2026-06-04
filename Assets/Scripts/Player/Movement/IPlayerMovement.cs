@@ -5,7 +5,7 @@ namespace Dafral.Player
 {
     public interface IPlayerMovement
     {
-        void Initialize(IGridEntity gridEntity, Transform playerTransform, PlayerMovementData movementData);
+        void Initialize(IGridEntity gridEntity, IPlayer player, Transform playerTransform, PlayerMovementData movementData);
         void Dispose();
     }
 }
