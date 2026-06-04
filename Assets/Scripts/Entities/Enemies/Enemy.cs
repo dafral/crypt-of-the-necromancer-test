@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Dafral.Enemies
 {
-    public class Enemy : GridEntity
+    public class Enemy : GridEntity, IEnemy
     {
         [SerializeField] private EnemyMovement _enemyMovement;
         [SerializeField] private EntityInteract _entityInteract;
@@ -41,6 +41,9 @@ namespace Dafral.Enemies
             base.Despawn();
         }
 
-
+        public void Dispose()
+        {
+            Despawn();
+        }
     }
 }

@@ -1,3 +1,4 @@
+using Dafral.Services;
 using UnityEngine;
 
 namespace Dafral.Player
@@ -6,7 +7,7 @@ namespace Dafral.Player
     {
         private void Start()
         {
-            PlayerFactory.CreatePlayer(transform.position);
+            ServiceLocator.Instance.GetService<IEntityService>().CreatePlayer(transform.position);
         }
     }
 }

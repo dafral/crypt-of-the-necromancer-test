@@ -1,3 +1,4 @@
+using Dafral.Services;
 using UnityEngine;
 
 namespace Dafral.Enemies
@@ -8,7 +9,7 @@ namespace Dafral.Enemies
         
         private void Start()
         {
-            EnemyFactory.CreateEnemy(_enemyId, transform.position);
+            ServiceLocator.Instance.GetService<IEntityService>().CreateEnemy(_enemyId, transform.position);
         }
     }
 }
