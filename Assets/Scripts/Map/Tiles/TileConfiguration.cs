@@ -25,10 +25,8 @@ namespace Dafral.Game.Map
         public Color EditorColor => _editorColor;
         public GameObject Prefab => _prefab;
 
-        /// <summary>Number of distinct sprites this tile can render (base sprite + variants).</summary>
         public int VariantCount => CountPool();
 
-        /// <summary>A representative sprite for inspectors/palette previews.</summary>
         public Sprite GetPreviewSprite()
         {
             if (_sprite != null) return _sprite;
@@ -44,10 +42,6 @@ namespace Dafral.Game.Map
             return null;
         }
 
-        /// <summary>
-        /// Picks a sprite for a given grid cell. The choice is weighted and deterministic
-        /// (the same position always yields the same sprite), so the look is stable across reloads.
-        /// </summary>
         public Sprite GetSpriteForCell(Vector2Int position)
         {
             int count = CountPool();

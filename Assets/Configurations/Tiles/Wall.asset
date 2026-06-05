@@ -15,4 +15,16 @@ MonoBehaviour:
   _id: wall
   _isWalkable: 0
   _sprite: {fileID: 1192793611, guid: 8d16ab5b639324b4a973d9be6c1b9969, type: 3}
+  _spriteVariants:
+  - Sprite: {fileID: 1986422026, guid: 8d16ab5b639324b4a973d9be6c1b9969, type: 3}
+    Weight: 0.1
+  - Sprite: {fileID: -57750540, guid: 8d16ab5b639324b4a973d9be6c1b9969, type: 3}
+    Weight: 0.1
+  - Sprite: {fileID: 1354168142, guid: 8d16ab5b639324b4a973d9be6c1b9969, type: 3}
+    Weight: 0.02
+  - Sprite: {fileID: 1852940669, guid: 8d16ab5b639324b4a973d9be6c1b9969, type: 3}
+    Weight: 0.1
+  - Sprite: {fileID: -2136509458, guid: 8d16ab5b639324b4a973d9be6c1b9969, type: 3}
+    Weight: 0.1
   _editorColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+  _prefab: {fileID: 0}

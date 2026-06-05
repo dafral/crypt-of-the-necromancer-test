@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prefab: {fileID: 503765276598367642, guid: 9ba669653cbd9994f9a394497be44d8f, type: 3}
   Data:
-    Health: 3
+    Health: 5
     Damage: 1
     Movement:
       MoveDuration: 0.1
       FallStepDuration: 0.05
       JumpHeight: 2
-      EarlyWindowDuration: 0.15
-      LateWindowDuration: 0.15
-      PerfectWindowDuration: 0.05
+      EarlyWindowDuration: 0.2
+      LateWindowDuration: 0.2
+      PerfectWindowDuration: 0.1

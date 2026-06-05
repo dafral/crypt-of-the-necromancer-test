@@ -36,7 +36,7 @@ namespace Dafral.Game.UI
 
         private void Update()
         {
-            _healthBarView.Render(_model.HealthRatio);
+            _healthBarView.Render(_model.CurrentHealth, _model.MaxHealth);
         }
     }
 }

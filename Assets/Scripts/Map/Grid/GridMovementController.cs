@@ -17,6 +17,8 @@ namespace Dafral.Game.Map
         private readonly float _fallStepDuration;
 
         private bool _isMoving;
+        private bool _isAscending;
+        private bool _airborne;
         private Coroutine _moveCoroutine;
 
         public GridMovementController(
@@ -34,24 +36,31 @@ namespace Dafral.Game.Map
             _fallStepDuration = fallStepDuration;
         }
 
-        public bool TryToMove(Vector2Int direction)
+        public GridMoveResult TryToMove(Vector2Int direction)
         {
-            if (_isMoving) return false;
+            if (_isMoving) return GridMoveResult.Blocked;
 
+            var targetPosition = _gridEntity.GridPosition + direction;
+            var targetTile = _gridService.Grid.IsWithinBounds(targetPosition)
+                ? _gridService.Grid.GetTile(targetPosition)
+                : null;
+            bool targetWasOccupied = targetTile?.GetTileState() == TileState.Occupied;
             bool success = _gridService.TryMoveEntity(_gridEntity, direction);
             if (success)
             {
                 var targetWorldPos = _gridService.GetWorldPosition(_gridEntity.GridPosition);
                 _moveCoroutine = _coroutineHost.StartCoroutine(AnimateAndFinish(targetWorldPos, _moveDuration));
+                return GridMoveResult.Moved;
             }
 
-            return success;
+            return targetWasOccupied ? GridMoveResult.Interacted : GridMoveResult.Blocked;
         }
 
         public bool TryJump(int height)
         {
             if (_isMoving || height <= 0 || !IsGrounded()) return false;
 
+            _airborne = true;
             _moveCoroutine = _coroutineHost.StartCoroutine(JumpCoroutine(height));
             OnJumped?.Invoke();
             return true;
@@ -59,11 +68,29 @@ namespace Dafral.Game.Map
 
         public bool TryApplyGravityStep()
         {
-            if (_isMoving || IsGrounded()) return false;
+            // Forgiving jump: never interrupt an ongoing ascent. The jump completes,
+            // then gravity resumes on subsequent beats.
+            if (_isAscending) return false;
+
+            if (IsGrounded())
+            {
+                TryFireLanded();
+                return false;
+            }
 
             bool fell = _gridService.TryMoveEntity(_gridEntity, Vector2Int.down);
             if (fell)
             {
+                _airborne = true;
+                // Gravity is beat-locked and must always apply once per beat while airborne.
+                // Cancel any in-flight lateral/fall animation so it does not fight the new fall step.
+                if (_moveCoroutine != null)
+                {
+                    _coroutineHost.StopCoroutine(_moveCoroutine);
+                    _moveCoroutine = null;
+                    _isMoving = false;
+                }
+
                 var fallTarget = _gridService.GetWorldPosition(_gridEntity.GridPosition);
                 _moveCoroutine = _coroutineHost.StartCoroutine(FallAndCheckLanded(fallTarget, _fallStepDuration));
             }
@@ -73,15 +100,25 @@ namespace Dafral.Game.Map
 
         public bool IsGrounded()
         {
-            var belowPosition = _gridEntity.GridPosition + Vector2Int.down;
+            return IsGroundedAt(_gridEntity.GridPosition);
+        }
+
+        public bool CanMoveToGroundedPosition(Vector2Int direction)
+        {
+            var targetPosition = _gridEntity.GridPosition + direction;
             var grid = _gridService.Grid;
+            var inBounds = grid.IsWithinBounds(targetPosition);
+            var targetTile = inBounds ? grid.GetTile(targetPosition) : null;
+            var targetOccupant = targetTile?.OccupyingEntity;
+            var targetIsWalkable = targetTile != null && targetTile.GetTileState() == TileState.Walkable;
+            var targetIsAttackTarget = _gridEntity.EntityType == GridEntityType.Enemy
+                && targetOccupant?.EntityType == GridEntityType.Player;
 
-            if (!grid.IsWithinBounds(belowPosition)) return true;
-
-            var tileBelow = grid.GetTile(belowPosition);
-            if (tileBelow == null) return true;
-
-            return tileBelow.GetTileState() != TileState.Walkable;
+            return !_isMoving
+                && inBounds
+                && targetTile != null
+                && (targetIsWalkable || targetIsAttackTarget)
+                && CanStandAt(targetPosition);
         }
 
         public void Stop()
@@ -91,12 +128,23 @@ namespace Dafral.Game.Map
                 _coroutineHost.StopCoroutine(_moveCoroutine);
                 _moveCoroutine = null;
                 _isMoving = false;
+                _isAscending = false;
             }
+        }
+
+        private void TryFireLanded()
+        {
+            if (!_airborne) return;
+            if (!IsGrounded()) return;
+
+            _airborne = false;
+            OnLanded?.Invoke();
         }
 
         private IEnumerator JumpCoroutine(int height)
         {
             _isMoving = true;
+            _isAscending = true;
 
             for (int i = 0; i < height; i++)
             {
@@ -108,10 +156,10 @@ namespace Dafral.Game.Map
             }
 
             _isMoving = false;
+            _isAscending = false;
             _moveCoroutine = null;
 
-            if (IsGrounded())
-                OnLanded?.Invoke();
+            TryFireLanded();
         }
 
         private IEnumerator FallAndCheckLanded(Vector3 targetPosition, float duration)
@@ -121,8 +169,7 @@ namespace Dafral.Game.Map
             _isMoving = false;
             _moveCoroutine = null;
 
-            if (IsGrounded())
-                OnLanded?.Invoke();
+            TryFireLanded();
         }
 
         private IEnumerator AnimateAndFinish(Vector3 targetPosition, float duration)
@@ -131,6 +178,8 @@ namespace Dafral.Game.Map
             yield return LerpTo(targetPosition, duration);
             _isMoving = false;
             _moveCoroutine = null;
+
+            TryFireLanded();
         }
 
         private IEnumerator LerpTo(Vector3 targetPosition, float duration)
@@ -147,6 +196,33 @@ namespace Dafral.Game.Map
             }
 
             _transform.position = targetPosition;
+        }
+
+        private bool IsGroundedAt(Vector2Int position)
+        {
+            var belowPosition = position + Vector2Int.down;
+            var grid = _gridService.Grid;
+
+            if (!grid.IsWithinBounds(belowPosition)) return true;
+
+            var tileBelow = grid.GetTile(belowPosition);
+            if (tileBelow == null) return true;
+
+            return tileBelow.GetTileState() != TileState.Walkable;
+        }
+
+        private bool CanStandAt(Vector2Int position)
+        {
+            var belowPosition = position + Vector2Int.down;
+            var grid = _gridService.Grid;
+
+            if (!grid.IsWithinBounds(belowPosition)) return true;
+
+            var tileBelow = grid.GetTile(belowPosition);
+            if (tileBelow == null) return true;
+            if (tileBelow.TileType is ITileHazard) return false;
+
+            return tileBelow.GetTileState() != TileState.Walkable;
         }
     }
 }

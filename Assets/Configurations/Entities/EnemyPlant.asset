@@ -18,4 +18,4 @@ MonoBehaviour:
     MovementStrategy: 0
     BeatsToMove: 0
     Health: 3
-    Damage: 0
+    Damage: 1

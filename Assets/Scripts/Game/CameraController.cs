@@ -1,5 +1,4 @@
 using Dafral.Events;
-using Dafral.Game.Map;
 using Dafral.Services;
 using UnityEngine;
 
@@ -7,16 +6,16 @@ namespace Dafral.Game
 {
     public class CameraController : MonoBehaviour
     {
-        [SerializeField] private float _smoothSpeed = 5f;
+        [SerializeField] private float _smoothTime = 0.15f;
+        [SerializeField] private float _maxSpeed = Mathf.Infinity;
 
-        private Vector3 _targetPosition;
-        private bool _hasTarget;
+        private Transform _target;
+        private Vector3 _velocity;
 
         private void Start()
         {
             var eventService = ServiceLocator.Instance.GetService<IEventService>();
             eventService.Subscribe<OnPlayerSpawned>(OnPlayerSpawned);
-            eventService.Subscribe<OnEntityGridPositionChanged>(OnEntityGridPositionChanged);
         }
 
         private void OnDestroy()
@@ -24,33 +23,32 @@ namespace Dafral.Game
             if (!ServiceLocator.Instance.Contains<IEventService>()) return;
             var eventService = ServiceLocator.Instance.GetService<IEventService>();
             eventService.Unsubscribe<OnPlayerSpawned>(OnPlayerSpawned);
-            eventService.Unsubscribe<OnEntityGridPositionChanged>(OnEntityGridPositionChanged);
         }
 
         private void OnPlayerSpawned(OnPlayerSpawned e)
         {
-            SnapToTarget(e.Player.transform.position);
-        }
-
-        private void OnEntityGridPositionChanged(OnEntityGridPositionChanged e)
-        {
-            if (e.Entity.EntityType != GridEntityType.Player) return;
-            var gridService = ServiceLocator.Instance.GetService<IGridService>();
-            _targetPosition = gridService.GetWorldPosition(e.NewPosition);
-            _hasTarget = true;
+            _target = e.Player.transform;
+            SnapToTarget(_target.position);
         }
 
         private void LateUpdate()
         {
-            if (!_hasTarget) return;
-            var desired = new Vector3(_targetPosition.x, _targetPosition.y, transform.position.z);
-            transform.position = Vector3.Lerp(transform.position, desired, _smoothSpeed * Time.deltaTime);
+            if (_target == null) return;
+
+            var targetPosition = _target.position;
+            var desired = new Vector3(targetPosition.x, targetPosition.y, transform.position.z);
+            transform.position = Vector3.SmoothDamp(
+                transform.position,
+                desired,
+                ref _velocity,
+                _smoothTime,
+                _maxSpeed,
+                Time.deltaTime);
         }
 
         private void SnapToTarget(Vector3 target)
         {
-            _targetPosition = target;
-            _hasTarget = true;
+            _velocity = Vector3.zero;
             transform.position = new Vector3(target.x, target.y, transform.position.z);
         }
     }

@@ -37,5 +37,17 @@ namespace Dafral.Services
             GameOverScreenController gameOverScreenController = Object.Instantiate(_uiConfiguration.GameOverScreenPrefab, _canvas.transform);
             gameOverScreenController.Initialize(isVictory);
         }
+
+        public void ShowStartGameScreen()
+        {
+            StartGameScreenController startGameScreenController = Object.Instantiate(_uiConfiguration.StartGameScreenPrefab, _canvas.transform);
+            startGameScreenController.Initialize();
+        }
+
+        public void ShowScreenControls()
+        {
+            ScreenControlsController screenControlsController = Object.Instantiate(_uiConfiguration.ScreenControlsPrefab, _canvas.transform);
+            screenControlsController.Initialize();
+        }
     }
 }

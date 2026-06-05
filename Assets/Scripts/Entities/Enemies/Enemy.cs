@@ -10,8 +10,8 @@ namespace Dafral.Enemies
         [SerializeField] private EntityInteract _entityInteract;
         [SerializeField] private EnemyAnimation _enemyAnimation;
 
+        private IEntityInteract _decoratedEntityInteract;
         private IEnemyMovement EnemyMovement => _enemyMovement;
-        private IEntityInteract EntityInteract => _entityInteract;
         private IEnemyAnimation EnemyAnimation => _enemyAnimation;
 
         public override GridEntityType EntityType => GridEntityType.Enemy;
@@ -25,7 +25,8 @@ namespace Dafral.Enemies
         private void InitializeControllers(EnemyData enemyData)
         {
             EnemyMovement.Initialize(this, enemyData);
-            EntityInteract.Initialize(GridEntityType.Player, new Combat(enemyData.Damage));
+            _decoratedEntityInteract = new EntityAboveInteractDecorator(_entityInteract, this);
+            _decoratedEntityInteract.Initialize(GridEntityType.Player, new Combat(enemyData.Damage));
             EnemyAnimation.Initialize();
             Health.OnHealthChanged += OnHealthChanged;
             Health.OnDied += OnDeath;
@@ -34,7 +35,7 @@ namespace Dafral.Enemies
 
         public override void Interact(IGridEntity otherEntity)
         {
-            EntityInteract.Interact(otherEntity);
+            _decoratedEntityInteract.Interact(otherEntity);
         }
 
         public void OnHealthChanged(int currentHealth, int maxHealth)
@@ -52,7 +53,7 @@ namespace Dafral.Enemies
         {
             Health.OnDied -= OnDeath;
             EnemyMovement.Dispose();
-            EntityInteract.Dispose();
+            _decoratedEntityInteract.Dispose();
             base.Despawn();
         }
 

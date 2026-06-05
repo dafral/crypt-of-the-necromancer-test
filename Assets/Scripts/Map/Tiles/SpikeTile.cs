@@ -4,11 +4,6 @@ using UnityEngine;
 
 namespace Dafral.Game.Map
 {
-    /// <summary>
-    /// Self-contained spike tile behaviour. On every beat it damages the entity
-    /// standing on the tile directly above it, sourcing the damage from its own
-    /// tile configuration so there is a single source of truth.
-    /// </summary>
     public class SpikeTile : MonoBehaviour
     {
         private IEventService _eventService;
@@ -18,12 +13,6 @@ namespace Dafral.Game.Map
 
         private void OnEnable()
         {
-            if (!ServiceLocator.Instance.Contains<IEventService>() ||
-                !ServiceLocator.Instance.Contains<IGridService>())
-            {
-                return;
-            }
-
             _eventService = ServiceLocator.Instance.GetService<IEventService>();
             _gridService = ServiceLocator.Instance.GetService<IGridService>();
             _gridPosition = _gridService.GetGridPosition(transform.position);
