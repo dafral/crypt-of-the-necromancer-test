@@ -77,7 +77,14 @@ namespace Dafral.Game.Map
             if (tileData.TileType.Prefab != null)
             {
                 tileObject = Instantiate(tileData.TileType.Prefab, worldPos, Quaternion.identity, GetParent());
-                ApplyCellSprite(tileObject, tileObject.GetComponent<SpriteRenderer>(), tileData.TileType, gridPosition);
+                var spriteRenderer = tileObject.GetComponent<SpriteRenderer>();
+
+                if (spriteRenderer == null && IsSpawnTile(tileData.TileType))
+                {
+                    spriteRenderer = tileObject.AddComponent<SpriteRenderer>();
+                }
+
+                ApplyCellSprite(tileObject, spriteRenderer, tileData.TileType, gridPosition);
             }
             else
             {
@@ -102,7 +109,10 @@ namespace Dafral.Game.Map
 
         private void ApplyCellSprite(GameObject tileObject, SpriteRenderer spriteRenderer, TileConfiguration tileType, Vector2Int gridPosition)
         {
-            if (spriteRenderer == null) return;
+            if (spriteRenderer == null)
+            {
+                return;
+            }
 
             var sprite = tileType.GetSpriteForCell(gridPosition);
             spriteRenderer.sprite = sprite;
@@ -151,6 +161,11 @@ namespace Dafral.Game.Map
         private Transform GetParent()
         {
             return _tileParent != null ? _tileParent : transform;
+        }
+
+        private static bool IsSpawnTile(TileConfiguration tileType)
+        {
+            return tileType != null && tileType.Id != null && tileType.Id.Contains("spawn");
         }
     }
 }
