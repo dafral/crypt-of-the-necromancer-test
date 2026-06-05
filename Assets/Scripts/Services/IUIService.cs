@@ -8,5 +8,6 @@ namespace Dafral.Services
         void CreatePlayerHealthBar();
         void ShowGameOverScreen(bool isVictory);
         void ShowStartGameScreen();
+        void ShowScreenControls();
     }
 }

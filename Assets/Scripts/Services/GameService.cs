@@ -43,6 +43,7 @@ namespace Dafral.Services
         private void CreateGameComponents()
         {
             _uiService.CreatePlayerHealthBar();
+            _uiService.ShowScreenControls();
             _rhythmController = Object.Instantiate(_gameConfiguration.RhythmController);
         }
 

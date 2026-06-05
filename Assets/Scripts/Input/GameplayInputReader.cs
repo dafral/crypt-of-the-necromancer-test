@@ -71,6 +71,18 @@ namespace Dafral.CustomInput
             OnPerformedEvent(OnPauseInput, context);
         }
 
+        public void InvokeAction(GameplayInputActions inputAction)
+        {
+            switch (inputAction)
+            {
+                case GameplayInputActions.MoveLeft: OnMoveLeftInput?.Invoke(); break;
+                case GameplayInputActions.MoveRight: OnMoveRightInput?.Invoke(); break;
+                case GameplayInputActions.Jump: OnJumpInput?.Invoke(); break;
+                case GameplayInputActions.Wait: OnWaitInput?.Invoke(); break;
+                case GameplayInputActions.Pause: OnPauseInput?.Invoke(); break;
+            }
+        }
+
         public void AddCallback(GameplayInputActions inputAction, Action callback)
         {
             if (_addCallbacks.TryGetValue(inputAction, out var addAction))

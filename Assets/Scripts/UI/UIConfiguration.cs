@@ -11,5 +11,6 @@ namespace Dafral.Services
         public PlayerHealthBarController PlayerHealthBarPrefab;
         public GameOverScreenController GameOverScreenPrefab;
         public StartGameScreenController StartGameScreenPrefab;
+        public ScreenControlsController ScreenControlsPrefab;
     }
 }
