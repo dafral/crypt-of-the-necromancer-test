@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69eba759db6fdf34c8978e41884b03a0, type: 3}
-  m_Name: EnemyLibrary
+  m_Script: {fileID: 11500000, guid: a73083fae430beb40b3468e3b727bf25, type: 3}
+  m_Name: EnemyPlant
   m_EditorClassIdentifier: 
-  Enemies:
-  - {fileID: 11400000, guid: 0207cf3c16834bd47ae4eb591d96bd6a, type: 2}
-  - {fileID: 11400000, guid: 9aae903de7d6375488d1fdacc5ee3651, type: 2}
+  Id: enemy_plant
+  Prefab: {fileID: 121524609088405402, guid: 764e45de85653c146a0f4501be7dd646, type: 3}
+  Data:
+    MovementStrategy: 0
+    BeatsToMove: 0
+    Health: 3
+    Damage: 0

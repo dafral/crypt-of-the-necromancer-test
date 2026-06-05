@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Generic;
+using Dafral.CustomInput;
+using Dafral.Events;
+using Dafral.Game;
+using Dafral.Game.Map;
+using Dafral.Services;
+using UnityEngine;
+
+namespace Dafral.Player
+{
+    public class PlayerMovement : MonoBehaviour, IPlayerMovement
+    {
+        private GameplayInputHandler _inputHandler;
+        private IGridMovementController _movementController;
+        private IPlayer _player;
+        private PlayerMovementData _movementData;
+        private IEventService _eventService;
+        private RhythmController _rhythmController;
+
+        public void Initialize(
+            IGridEntity gridEntity, 
+            IPlayer player, 
+            Transform playerTransform, 
+            PlayerMovementData movementData)
+        {
+            _player = player;
+            _movementData = movementData;
+            _rhythmController = FindObjectOfType<RhythmController>();
+            _eventService = ServiceLocator.Instance.GetService<IEventService>();
+
+            _movementController = new GridMovementController(
+                gridEntity, 
+                playerTransform, 
+                this, 
+                _movementData.MoveDuration, 
+                _movementData.FallStepDuration);
+
+            _movementController.OnJumped += _player.OnJumped;
+            _movementController.OnLanded += _player.OnLanded;
+
+            _eventService.Subscribe<OnBeatTriggered>(OnBeatTriggered);
+            InitializeInputHandler();
+        }
+
+        private void OnBeatTriggered(OnBeatTriggered e)
+        {
+            _movementController.TryApplyGravityStep();
+        }
+
+        private void InitializeInputHandler()
+        {
+            var inputActions = new Dictionary<GameplayInputActions, Action>
+            {
+                { GameplayInputActions.Jump, OnJump },
+                { GameplayInputActions.MoveLeft, OnMoveLeft },
+                { GameplayInputActions.Wait, OnWait },
+                { GameplayInputActions.MoveRight, OnMoveRight },
+            };
+            
+            _inputHandler = new GameplayInputHandler(inputActions);
+            _inputHandler.Initialize();
+        }
+
+        private void OnMoveLeft()
+        {
+            if (TryRhythmMove(Vector2Int.left))
+            {
+                _player.OnDash(Vector2Int.left);
+            }
+        }
+
+        private void OnMoveRight()
+        {
+            if (TryRhythmMove(Vector2Int.right))
+            {
+                _player.OnDash(Vector2Int.right);
+            }
+        }
+
+        private void OnJump()
+        {
+            BeatScore score = EvaluateBeatTiming();
+            if (score == BeatScore.None) return;
+            _movementController.TryJump(_movementData.JumpHeight);
+        }
+
+        private void OnWait()
+        {
+        }
+
+        private bool TryRhythmMove(Vector2Int direction)
+        {
+            BeatScore score = EvaluateBeatTiming();
+
+            if (score == BeatScore.None)
+                return false;
+
+            return _movementController.TryToMove(direction);
+        }
+
+        private BeatScore EvaluateBeatTiming()
+        {
+            float elapsed = _rhythmController.ElapsedFromLastBeat;
+            float beatInterval = _rhythmController.BeatInterval;
+            float timeToNextBeat = beatInterval - elapsed;
+
+            bool inLateWindow = elapsed <= _movementData.LateWindowDuration;
+            bool inEarlyWindow = timeToNextBeat <= _movementData.EarlyWindowDuration;
+
+            if (!inLateWindow && !inEarlyWindow)
+                return BeatScore.None;
+
+            float distanceToBeat = Mathf.Min(elapsed, timeToNextBeat);
+
+            if (distanceToBeat <= _movementData.PerfectWindowDuration)
+                return BeatScore.Perfect;
+
+            if (inEarlyWindow)
+                return BeatScore.TooSoon;
+
+            return BeatScore.TooLate;
+        }
+
+        public void Dispose()
+        {
+            _inputHandler?.Dispose();
+            _eventService?.Unsubscribe<OnBeatTriggered>(OnBeatTriggered);
+            _movementController?.Stop();
+        }
+    }
+}

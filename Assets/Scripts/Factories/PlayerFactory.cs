@@ -2,16 +2,16 @@ using UnityEngine;
 
 namespace Dafral.Player
 {
-    public static class PlayerFactory
+    public class PlayerFactory
     {
-        private static PlayerConfiguration _playerConfiguration;
+        private PlayerConfiguration _playerConfiguration;
 
-        public static void Initialize(PlayerConfiguration playerConfiguration)
+        public PlayerFactory(PlayerConfiguration playerConfiguration)
         {
             _playerConfiguration = playerConfiguration;
         }
 
-        public static Player CreatePlayer(Vector2 position)
+        public IPlayer CreatePlayer(Vector2 position)
         {
             var player = Object.Instantiate(_playerConfiguration.Prefab, position, Quaternion.identity);
             player.Initialize(_playerConfiguration.Data);
