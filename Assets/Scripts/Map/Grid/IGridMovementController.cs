@@ -3,12 +3,19 @@ using UnityEngine;
 
 namespace Dafral.Game.Map
 {
+    public enum GridMoveResult
+    {
+        Blocked,
+        Moved,
+        Interacted
+    }
+
     public interface IGridMovementController
     {
         event Action OnJumped;
         event Action OnLanded;
 
-        bool TryToMove(Vector2Int direction);
+        GridMoveResult TryToMove(Vector2Int direction);
         bool TryJump(int height);
         bool TryApplyGravityStep();
         bool IsGrounded();

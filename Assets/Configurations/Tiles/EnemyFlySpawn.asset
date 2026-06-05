@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: enemy_spawn
   _isWalkable: 1
-  _sprite: {fileID: 1986422026, guid: 8d16ab5b639324b4a973d9be6c1b9969, type: 3}
+  _sprite: {fileID: -486076496, guid: 8d16ab5b639324b4a973d9be6c1b9969, type: 3}
   _spriteVariants: []
   _editorColor: {r: 1, g: 0, b: 0.71657276, a: 1}
   _prefab: {fileID: 1034469718972443249, guid: 10203c4959ddf68438c95b3cabc451ef, type: 3}

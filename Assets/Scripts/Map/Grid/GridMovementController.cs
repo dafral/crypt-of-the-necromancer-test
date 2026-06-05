@@ -34,18 +34,24 @@ namespace Dafral.Game.Map
             _fallStepDuration = fallStepDuration;
         }
 
-        public bool TryToMove(Vector2Int direction)
+        public GridMoveResult TryToMove(Vector2Int direction)
         {
-            if (_isMoving) return false;
+            if (_isMoving) return GridMoveResult.Blocked;
 
+            var targetPosition = _gridEntity.GridPosition + direction;
+            var targetTile = _gridService.Grid.IsWithinBounds(targetPosition)
+                ? _gridService.Grid.GetTile(targetPosition)
+                : null;
+            bool targetWasOccupied = targetTile?.GetTileState() == TileState.Occupied;
             bool success = _gridService.TryMoveEntity(_gridEntity, direction);
             if (success)
             {
                 var targetWorldPos = _gridService.GetWorldPosition(_gridEntity.GridPosition);
                 _moveCoroutine = _coroutineHost.StartCoroutine(AnimateAndFinish(targetWorldPos, _moveDuration));
+                return GridMoveResult.Moved;
             }
 
-            return success;
+            return targetWasOccupied ? GridMoveResult.Interacted : GridMoveResult.Blocked;
         }
 
         public bool TryJump(int height)

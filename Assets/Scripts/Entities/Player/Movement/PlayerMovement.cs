@@ -65,7 +65,7 @@ namespace Dafral.Player
 
         private void OnMoveLeft()
         {
-            if (TryRhythmMove(Vector2Int.left))
+            if (TryRhythmMove(Vector2Int.left) != GridMoveResult.Blocked)
             {
                 _player.OnDash(Vector2Int.left);
             }
@@ -73,7 +73,7 @@ namespace Dafral.Player
 
         private void OnMoveRight()
         {
-            if (TryRhythmMove(Vector2Int.right))
+            if (TryRhythmMove(Vector2Int.right) != GridMoveResult.Blocked)
             {
                 _player.OnDash(Vector2Int.right);
             }
@@ -95,23 +95,23 @@ namespace Dafral.Player
         {
         }
 
-        private bool TryRhythmMove(Vector2Int direction)
+        private GridMoveResult TryRhythmMove(Vector2Int direction)
         {
             BeatScore score = EvaluateBeatTiming(out int beat);
 
             if (score == BeatScore.None)
-                return false;
+                return GridMoveResult.Blocked;
 
             if (_lastConsumedBeat == beat)
-                return false;
+                return GridMoveResult.Blocked;
 
-            bool moved = _movementController.TryToMove(direction);
-            if (moved)
+            GridMoveResult moveResult = _movementController.TryToMove(direction);
+            if (moveResult != GridMoveResult.Blocked)
             {
                 _lastConsumedBeat = beat;
             }
 
-            return moved;
+            return moveResult;
         }
 
         private BeatScore EvaluateBeatTiming(out int beat)
