@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d22e73c6dd870840959f9c0a45c2314, type: 3}
-  m_Name: Map1
+  m_Name: Map2
   m_EditorClassIdentifier: 
   _gridSize: {x: 100, y: 10}
   _cellSize: 1
