@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GameConfiguration
   m_EditorClassIdentifier: 
   _rhythmController: {fileID: 8509472716804397237, guid: 0cdc5a0923f6bff479d1d4efb87d639f, type: 3}
+  _rhythmBeatSound: {fileID: 8300000, guid: a4669698c56ba1b478deec98bd2d6f6c, type: 3}
   _levels:
   - {fileID: 11400000, guid: 2dd719411736c87479102ce2ed47c5cc, type: 2}
   - {fileID: 11400000, guid: 3144909ea2138ca42bc63b7b9296c73f, type: 2}
