@@ -16,7 +16,7 @@ namespace Dafral.Player
         private IPlayer _player;
         private PlayerMovementData _movementData;
         private IEventService _eventService;
-        private RhythmController _rhythmController;
+        private IRhythmController _rhythmController;
         private int _lastConsumedBeat = -1;
 
         public void Initialize(
@@ -27,7 +27,7 @@ namespace Dafral.Player
         {
             _player = player;
             _movementData = movementData;
-            _rhythmController = FindObjectOfType<RhythmController>();
+            _rhythmController = ServiceLocator.Instance.GetService<IGameService>().RhythmController;
             _eventService = ServiceLocator.Instance.GetService<IEventService>();
 
             _movementController = new GridMovementController(

@@ -6,9 +6,11 @@ namespace Dafral.Game
     public class GameConfiguration : ScriptableObject
     {
         [SerializeField] private RhythmController _rhythmController;
+        [SerializeField] private AudioClip _rhythmBeatSound;
         [SerializeField] private LevelConfiguration[] _levels;
 
         public RhythmController RhythmController => _rhythmController;
+        public AudioClip RhythmBeatSound => _rhythmBeatSound;
         public LevelConfiguration[] Levels => _levels;
     }
 }

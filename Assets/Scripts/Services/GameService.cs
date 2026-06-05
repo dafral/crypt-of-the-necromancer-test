@@ -11,8 +11,10 @@ namespace Dafral.Services
         private readonly IGridService _gridService;
         private readonly IUIService _uiService;
         private readonly IEventService _eventService;
+        private IRhythmController _rhythmController;
         private int _currentLevelIndex;
-        private RhythmController _rhythmController;
+
+        public IRhythmController RhythmController => _rhythmController;
 
         public GameService(
             GameConfiguration gameConfiguration, 
@@ -44,6 +46,16 @@ namespace Dafral.Services
         {
             _uiService.CreatePlayerHealthBar();
             _uiService.ShowScreenControls();
+            CreateRhythmController();
+        }
+
+        private void CreateRhythmController()
+        {
+            if (_rhythmController is MonoBehaviour existingRhythmBehaviour && existingRhythmBehaviour != null)
+            {
+                Object.Destroy(existingRhythmBehaviour.gameObject);
+            }
+
             _rhythmController = Object.Instantiate(_gameConfiguration.RhythmController);
         }
 
@@ -77,7 +89,9 @@ namespace Dafral.Services
         private void LoadLevel(LevelConfiguration levelConfiguration)
         {
             _gridService.LoadMap(levelConfiguration.MapConfiguration);
-            _rhythmController.Initialize(levelConfiguration.LevelData.RhythmTempo);
+            _rhythmController.Initialize(
+                levelConfiguration.LevelData.RhythmTempo,
+                _gameConfiguration.RhythmBeatSound);
         }
     }
 }

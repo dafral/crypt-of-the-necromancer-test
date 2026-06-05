@@ -1,13 +1,15 @@
-using System;
 using Dafral.Events;
 using Dafral.Services;
 using UnityEngine;
 
 namespace Dafral.Game
 {
-    public class RhythmController : MonoBehaviour
+    [RequireComponent(typeof(AudioSource))]
+    public class RhythmController : MonoBehaviour, IRhythmController
     {
         private IEventService _eventService;
+        private AudioSource _audioSource;
+        private AudioClip _beatSound;
         private float _tempoBpm;
         private float _elapsedFromLastBeat;
         private int _beatCount;
@@ -18,14 +20,24 @@ namespace Dafral.Game
         public float ElapsedFromLastBeat => _elapsedFromLastBeat;
         public int BeatCount => _beatCount;
 
-        public void Initialize(float tempoBpm)
+        public void Initialize(float tempoBpm, AudioClip beatSound)
         {
             var serviceLocator = ServiceLocator.Instance;
             _eventService = serviceLocator.GetService<IEventService>();
             serviceLocator.GetService<IUIService>().CreateRhythmBar(this);
+
+            EnsureAudioSource();
+            _beatSound = beatSound;
+
             _tempoBpm = Mathf.Max(1f, tempoBpm);
             _elapsedFromLastBeat = 0f;
             _beatCount = 0;
+        }
+
+        private void EnsureAudioSource()
+        {
+            _audioSource = GetComponent<AudioSource>();
+            _audioSource.playOnAwake = false;
         }
 
         private void Update()
@@ -37,8 +49,14 @@ namespace Dafral.Game
             {
                 _elapsedFromLastBeat -= beatInterval;
                 _beatCount++;
+                PlayBeatSound();
                 _eventService.RaiseEvent(new OnBeatTriggered());
             }
+        }
+
+        private void PlayBeatSound()
+        {
+            _audioSource.PlayOneShot(_beatSound);
         }
     }
 }

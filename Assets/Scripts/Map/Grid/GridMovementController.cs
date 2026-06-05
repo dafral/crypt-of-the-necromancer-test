@@ -17,6 +17,8 @@ namespace Dafral.Game.Map
         private readonly float _fallStepDuration;
 
         private bool _isMoving;
+        private bool _isAscending;
+        private bool _airborne;
         private Coroutine _moveCoroutine;
 
         public GridMovementController(
@@ -58,6 +60,7 @@ namespace Dafral.Game.Map
         {
             if (_isMoving || height <= 0 || !IsGrounded()) return false;
 
+            _airborne = true;
             _moveCoroutine = _coroutineHost.StartCoroutine(JumpCoroutine(height));
             OnJumped?.Invoke();
             return true;
@@ -65,11 +68,20 @@ namespace Dafral.Game.Map
 
         public bool TryApplyGravityStep()
         {
-            if (IsGrounded()) return false;
+            // Forgiving jump: never interrupt an ongoing ascent. The jump completes,
+            // then gravity resumes on subsequent beats.
+            if (_isAscending) return false;
+
+            if (IsGrounded())
+            {
+                TryFireLanded();
+                return false;
+            }
 
             bool fell = _gridService.TryMoveEntity(_gridEntity, Vector2Int.down);
             if (fell)
             {
+                _airborne = true;
                 // Gravity is beat-locked and must always apply once per beat while airborne.
                 // Cancel any in-flight lateral/fall animation so it does not fight the new fall step.
                 if (_moveCoroutine != null)
@@ -116,12 +128,23 @@ namespace Dafral.Game.Map
                 _coroutineHost.StopCoroutine(_moveCoroutine);
                 _moveCoroutine = null;
                 _isMoving = false;
+                _isAscending = false;
             }
+        }
+
+        private void TryFireLanded()
+        {
+            if (!_airborne) return;
+            if (!IsGrounded()) return;
+
+            _airborne = false;
+            OnLanded?.Invoke();
         }
 
         private IEnumerator JumpCoroutine(int height)
         {
             _isMoving = true;
+            _isAscending = true;
 
             for (int i = 0; i < height; i++)
             {
@@ -133,10 +156,10 @@ namespace Dafral.Game.Map
             }
 
             _isMoving = false;
+            _isAscending = false;
             _moveCoroutine = null;
 
-            if (IsGrounded())
-                OnLanded?.Invoke();
+            TryFireLanded();
         }
 
         private IEnumerator FallAndCheckLanded(Vector3 targetPosition, float duration)
@@ -146,8 +169,7 @@ namespace Dafral.Game.Map
             _isMoving = false;
             _moveCoroutine = null;
 
-            if (IsGrounded())
-                OnLanded?.Invoke();
+            TryFireLanded();
         }
 
         private IEnumerator AnimateAndFinish(Vector3 targetPosition, float duration)
@@ -156,6 +178,8 @@ namespace Dafral.Game.Map
             yield return LerpTo(targetPosition, duration);
             _isMoving = false;
             _moveCoroutine = null;
+
+            TryFireLanded();
         }
 
         private IEnumerator LerpTo(Vector3 targetPosition, float duration)
