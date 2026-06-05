@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using Dafral.Events;
 using Dafral.Services;
 using UnityEngine;
@@ -68,8 +67,6 @@ namespace Dafral.Game.Map
             {
                 CreateTileVisual(kvp.Key, kvp.Value);
             }
-
-            LogAdjacentTileGaps();
         }
 
         private void CreateTileVisual(Vector2Int gridPosition, TileData tileData)
@@ -123,20 +120,6 @@ namespace Dafral.Game.Map
 
             var scale = GetScaleForCell(sprite);
             tileObject.transform.localScale = new Vector3(scale, scale, 1f);
-
-            // #region agent log
-            if (gridPosition.x <= 18 && gridPosition.y == 7)
-            {
-                var expectedWorldSize = sprite != null
-                    ? Mathf.Max(sprite.rect.width, sprite.rect.height) / sprite.pixelsPerUnit
-                    : 0f;
-                DbgLog(
-                    scale < 0.999f ? "A" : "E",
-                    "GridVisualizer.ApplyCellSprite",
-                    "tile scale and sprite sizing",
-                    $"{{\"gridX\":{gridPosition.x},\"gridY\":{gridPosition.y},\"cellSize\":{_coordinateConverter.CellSize},\"scale\":{scale:F6},\"expectedWorldSize\":{expectedWorldSize:F6},\"boundsX\":{(sprite != null ? sprite.bounds.size.x : 0f):F6},\"boundsY\":{(sprite != null ? sprite.bounds.size.y : 0f):F6},\"spriteName\":\"{(sprite != null ? sprite.name : "null")}\"}}");
-            }
-            // #endregion
         }
 
         public void UpdateTileVisual(Vector2Int position, TileData tileData)
@@ -184,53 +167,5 @@ namespace Dafral.Game.Map
         {
             return tileType != null && tileType.Id != null && tileType.Id.Contains("spawn");
         }
-
-        // #region agent log
-        private void LogAdjacentTileGaps()
-        {
-            for (int x = 16; x <= 20; x++)
-            {
-                var left = new Vector2Int(x, 7);
-                var right = new Vector2Int(x + 1, 7);
-                if (!_tileVisuals.TryGetValue(left, out var leftTile) || !_tileVisuals.TryGetValue(right, out var rightTile))
-                {
-                    continue;
-                }
-
-                var leftRenderer = leftTile.GetComponent<SpriteRenderer>();
-                var rightRenderer = rightTile.GetComponent<SpriteRenderer>();
-                if (leftRenderer == null || rightRenderer == null)
-                {
-                    continue;
-                }
-
-                var leftBounds = leftRenderer.bounds;
-                var rightBounds = rightRenderer.bounds;
-                var horizontalGap = rightBounds.min.x - leftBounds.max.x;
-                var centerDistance = Vector3.Distance(leftTile.transform.position, rightTile.transform.position);
-
-                DbgLog(
-                    horizontalGap > 0.0001f ? "B" : "D",
-                    "GridVisualizer.LogAdjacentTileGaps",
-                    "adjacent tile seam measurement",
-                    $"{{\"leftX\":{left.x},\"rightX\":{right.x},\"horizontalGap\":{horizontalGap:F6},\"centerDistance\":{centerDistance:F6},\"leftMaxX\":{leftBounds.max.x:F6},\"rightMinX\":{rightBounds.min.x:F6},\"leftScale\":{leftTile.transform.localScale.x:F6}}}");
-            }
-        }
-
-        private static void DbgLog(string hypothesisId, string location, string message, string dataJson)
-        {
-            try
-            {
-                var path = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "debug-7de642.log");
-                var timestamp = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-                File.AppendAllText(
-                    path,
-                    $"{{\"sessionId\":\"7de642\",\"hypothesisId\":\"{hypothesisId}\",\"location\":\"{location}\",\"message\":\"{message}\",\"data\":{dataJson},\"timestamp\":{timestamp}}}\n");
-            }
-            catch
-            {
-            }
-        }
-        // #endregion
     }
 }

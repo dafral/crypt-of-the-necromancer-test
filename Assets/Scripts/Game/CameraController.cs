@@ -1,4 +1,3 @@
-using System.IO;
 using Dafral.Events;
 using Dafral.Game.Map;
 using Dafral.Services;
@@ -12,7 +11,6 @@ namespace Dafral.Game
 
         private Vector3 _targetPosition;
         private bool _hasTarget;
-        private int _debugFrameCount;
 
         private void Start()
         {
@@ -47,19 +45,6 @@ namespace Dafral.Game
             if (!_hasTarget) return;
             var desired = new Vector3(_targetPosition.x, _targetPosition.y, transform.position.z);
             transform.position = Vector3.Lerp(transform.position, desired, _smoothSpeed * Time.deltaTime);
-
-            // #region agent log
-            if (_debugFrameCount < 5)
-            {
-                _debugFrameCount++;
-                var pos = transform.position;
-                DbgLog(
-                    "C",
-                    "CameraController.LateUpdate",
-                    "camera sub-pixel position",
-                    $"{{\"frame\":{_debugFrameCount},\"posX\":{pos.x:F6},\"posY\":{pos.y:F6},\"fracX\":{pos.x - Mathf.Round(pos.x):F6},\"fracY\":{pos.y - Mathf.Round(pos.y):F6}}}");
-            }
-            // #endregion
         }
 
         private void SnapToTarget(Vector3 target)
@@ -68,22 +53,5 @@ namespace Dafral.Game
             _hasTarget = true;
             transform.position = new Vector3(target.x, target.y, transform.position.z);
         }
-
-        // #region agent log
-        private static void DbgLog(string hypothesisId, string location, string message, string dataJson)
-        {
-            try
-            {
-                var path = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "debug-7de642.log");
-                var timestamp = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-                File.AppendAllText(
-                    path,
-                    $"{{\"sessionId\":\"7de642\",\"hypothesisId\":\"{hypothesisId}\",\"location\":\"{location}\",\"message\":\"{message}\",\"data\":{dataJson},\"timestamp\":{timestamp}}}\n");
-            }
-            catch
-            {
-            }
-        }
-        // #endregion
     }
 }

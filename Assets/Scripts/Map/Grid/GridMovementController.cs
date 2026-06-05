@@ -65,12 +65,20 @@ namespace Dafral.Game.Map
 
         public bool TryApplyGravityStep()
         {
-            var grounded = IsGrounded();
-            if (_isMoving || grounded) return false;
+            if (IsGrounded()) return false;
 
             bool fell = _gridService.TryMoveEntity(_gridEntity, Vector2Int.down);
             if (fell)
             {
+                // Gravity is beat-locked and must always apply once per beat while airborne.
+                // Cancel any in-flight lateral/fall animation so it does not fight the new fall step.
+                if (_moveCoroutine != null)
+                {
+                    _coroutineHost.StopCoroutine(_moveCoroutine);
+                    _moveCoroutine = null;
+                    _isMoving = false;
+                }
+
                 var fallTarget = _gridService.GetWorldPosition(_gridEntity.GridPosition);
                 _moveCoroutine = _coroutineHost.StartCoroutine(FallAndCheckLanded(fallTarget, _fallStepDuration));
             }
