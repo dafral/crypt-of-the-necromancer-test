@@ -40,6 +40,8 @@ namespace Dafral.Player
 
         public void OnHealthChanged(int currentHealth, int maxHealth)
         {
+            if (currentHealth >= maxHealth) return;
+
             if(_flashingAnimationCoroutine != null)
             {
                 StopCoroutine(_flashingAnimationCoroutine);

@@ -17,6 +17,7 @@ namespace Dafral.Player
         private PlayerMovementData _movementData;
         private IEventService _eventService;
         private RhythmController _rhythmController;
+        private int _lastConsumedBeat = -1;
 
         public void Initialize(
             IGridEntity gridEntity, 
@@ -80,9 +81,14 @@ namespace Dafral.Player
 
         private void OnJump()
         {
-            BeatScore score = EvaluateBeatTiming();
+            BeatScore score = EvaluateBeatTiming(out int beat);
             if (score == BeatScore.None) return;
-            _movementController.TryJump(_movementData.JumpHeight);
+
+            if (_lastConsumedBeat == beat) return;
+            if (_movementController.TryJump(_movementData.JumpHeight))
+            {
+                _lastConsumedBeat = beat;
+            }
         }
 
         private void OnWait()
@@ -91,15 +97,24 @@ namespace Dafral.Player
 
         private bool TryRhythmMove(Vector2Int direction)
         {
-            BeatScore score = EvaluateBeatTiming();
+            BeatScore score = EvaluateBeatTiming(out int beat);
 
             if (score == BeatScore.None)
                 return false;
 
-            return _movementController.TryToMove(direction);
+            if (_lastConsumedBeat == beat)
+                return false;
+
+            bool moved = _movementController.TryToMove(direction);
+            if (moved)
+            {
+                _lastConsumedBeat = beat;
+            }
+
+            return moved;
         }
 
-        private BeatScore EvaluateBeatTiming()
+        private BeatScore EvaluateBeatTiming(out int beat)
         {
             float elapsed = _rhythmController.ElapsedFromLastBeat;
             float beatInterval = _rhythmController.BeatInterval;
@@ -108,10 +123,16 @@ namespace Dafral.Player
             bool inLateWindow = elapsed <= _movementData.LateWindowDuration;
             bool inEarlyWindow = timeToNextBeat <= _movementData.EarlyWindowDuration;
 
+            beat = _rhythmController.BeatCount;
+
             if (!inLateWindow && !inEarlyWindow)
                 return BeatScore.None;
 
             float distanceToBeat = Mathf.Min(elapsed, timeToNextBeat);
+            if (inEarlyWindow && timeToNextBeat <= elapsed)
+            {
+                beat++;
+            }
 
             if (distanceToBeat <= _movementData.PerfectWindowDuration)
                 return BeatScore.Perfect;

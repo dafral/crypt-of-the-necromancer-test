@@ -10,11 +10,13 @@ namespace Dafral.Game
         private IEventService _eventService;
         private float _tempoBpm;
         private float _elapsedFromLastBeat;
+        private int _beatCount;
 
         public float TempoBpm => _tempoBpm;
         public float BeatInterval => 60f / Mathf.Max(1f, _tempoBpm);
         public float BeatProgress => Mathf.Clamp01(_elapsedFromLastBeat / BeatInterval);
         public float ElapsedFromLastBeat => _elapsedFromLastBeat;
+        public int BeatCount => _beatCount;
 
         public void Initialize(float tempoBpm)
         {
@@ -22,6 +24,8 @@ namespace Dafral.Game
             _eventService = serviceLocator.GetService<IEventService>();
             serviceLocator.GetService<IUIService>().CreateRhythmBar(this);
             _tempoBpm = Mathf.Max(1f, tempoBpm);
+            _elapsedFromLastBeat = 0f;
+            _beatCount = 0;
         }
 
         private void Update()
@@ -32,6 +36,7 @@ namespace Dafral.Game
             while (_elapsedFromLastBeat >= beatInterval)
             {
                 _elapsedFromLastBeat -= beatInterval;
+                _beatCount++;
                 _eventService.RaiseEvent(new OnBeatTriggered());
             }
         }
