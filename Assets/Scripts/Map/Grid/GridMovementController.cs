@@ -59,7 +59,8 @@ namespace Dafral.Game.Map
 
         public bool TryApplyGravityStep()
         {
-            if (_isMoving || IsGrounded()) return false;
+            var grounded = IsGrounded();
+            if (_isMoving || grounded) return false;
 
             bool fell = _gridService.TryMoveEntity(_gridEntity, Vector2Int.down);
             if (fell)
@@ -73,15 +74,25 @@ namespace Dafral.Game.Map
 
         public bool IsGrounded()
         {
-            var belowPosition = _gridEntity.GridPosition + Vector2Int.down;
+            return IsGroundedAt(_gridEntity.GridPosition);
+        }
+
+        public bool CanMoveToGroundedPosition(Vector2Int direction)
+        {
+            var targetPosition = _gridEntity.GridPosition + direction;
             var grid = _gridService.Grid;
+            var inBounds = grid.IsWithinBounds(targetPosition);
+            var targetTile = inBounds ? grid.GetTile(targetPosition) : null;
+            var targetOccupant = targetTile?.OccupyingEntity;
+            var targetIsWalkable = targetTile != null && targetTile.GetTileState() == TileState.Walkable;
+            var targetIsAttackTarget = _gridEntity.EntityType == GridEntityType.Enemy
+                && targetOccupant?.EntityType == GridEntityType.Player;
 
-            if (!grid.IsWithinBounds(belowPosition)) return true;
-
-            var tileBelow = grid.GetTile(belowPosition);
-            if (tileBelow == null) return true;
-
-            return tileBelow.GetTileState() != TileState.Walkable;
+            return !_isMoving
+                && inBounds
+                && targetTile != null
+                && (targetIsWalkable || targetIsAttackTarget)
+                && CanStandAt(targetPosition);
         }
 
         public void Stop()
@@ -147,6 +158,33 @@ namespace Dafral.Game.Map
             }
 
             _transform.position = targetPosition;
+        }
+
+        private bool IsGroundedAt(Vector2Int position)
+        {
+            var belowPosition = position + Vector2Int.down;
+            var grid = _gridService.Grid;
+
+            if (!grid.IsWithinBounds(belowPosition)) return true;
+
+            var tileBelow = grid.GetTile(belowPosition);
+            if (tileBelow == null) return true;
+
+            return tileBelow.GetTileState() != TileState.Walkable;
+        }
+
+        private bool CanStandAt(Vector2Int position)
+        {
+            var belowPosition = position + Vector2Int.down;
+            var grid = _gridService.Grid;
+
+            if (!grid.IsWithinBounds(belowPosition)) return true;
+
+            var tileBelow = grid.GetTile(belowPosition);
+            if (tileBelow == null) return true;
+            if (tileBelow.TileType is ITileHazard) return false;
+
+            return tileBelow.GetTileState() != TileState.Walkable;
         }
     }
 }

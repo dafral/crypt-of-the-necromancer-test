@@ -18,9 +18,10 @@ namespace Dafral.Enemies
         public void Initialize(IGridEntity gridEntity, EnemyData data)
         {
             _beatsToMove = data.BeatsToMove;
+            var entityTransform = transform.parent != null ? transform.parent : transform;
 
             _movementController = new GridMovementController(
-                gridEntity, transform, this, _moveDuration, _fallStepDuration);
+                gridEntity, entityTransform, this, _moveDuration, _fallStepDuration);
 
             CreateMovementStrategy(data.MovementStrategy);
             SubscribeToEvents();
@@ -52,7 +53,9 @@ namespace Dafral.Enemies
 
         private void OnBeatTriggered(OnBeatTriggered e)
         {
-            if (!_movementController.IsGrounded())
+            var grounded = _movementController.IsGrounded();
+
+            if (!grounded)
             {
                 _movementController.TryApplyGravityStep();
                 return;
@@ -62,7 +65,8 @@ namespace Dafral.Enemies
             if (_beatsCount >= _beatsToMove)
             {
                 _beatsCount = 0;
-                var direction = _movementStrategy.GetNextDirection();
+                var direction = _movementStrategy.GetNextDirection(_movementController.CanMoveToGroundedPosition);
+
                 if (direction.HasValue)
                 {
                     _movementController.TryToMove(direction.Value);
