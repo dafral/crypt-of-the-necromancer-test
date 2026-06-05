@@ -31,6 +31,7 @@ namespace Dafral.Services
         {
             CreateGameComponents();
             LoadLevel(_gameConfiguration.Levels[0]);
+            _eventService.RaiseEvent(new OnGameStarted());
         }
 
         public void RestartGame()

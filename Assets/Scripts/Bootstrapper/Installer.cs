@@ -33,7 +33,7 @@ namespace Dafral.Bootstrapper
 
         private void InitializeGame()
         {
-            ServiceLocator.Instance.GetService<IGameService>().StartGame();
+            ServiceLocator.Instance.GetService<IUIService>().ShowStartGameScreen();
         }
     }
 }

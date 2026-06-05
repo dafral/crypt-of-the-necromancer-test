@@ -16,3 +16,4 @@ MonoBehaviour:
   RhythmBarPrefab: {fileID: 4932031724559819502, guid: 6c79a6c7eb6f03a46bcf949fe575cd98, type: 3}
   PlayerHealthBarPrefab: {fileID: -5486969445868809561, guid: 1963744ae29038746baebdfa022d44d6, type: 3}
   GameOverScreenPrefab: {fileID: 3984928905531389356, guid: f71ea00379370a44d9532baa572d07e0, type: 3}
+  StartGameScreenPrefab: {fileID: -7416800393416963934, guid: 218f88698f3f5f445a7b0f5ce3f647d2, type: 3}
